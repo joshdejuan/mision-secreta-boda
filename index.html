@@ -36,7 +36,7 @@ button:hover,.btn:hover{background:var(--ink)}
 .small{padding:9px 14px;font-size:13.5px}
 button:disabled{opacity:.5;cursor:default}
 :focus-visible{outline:3px solid var(--teal);outline-offset:2px}
-input[type=text],input[type=email],input[type=number],select{font:600 17px var(--body);color:var(--ink);background:var(--card-solid);border:1.5px solid var(--line);border-radius:14px;padding:13px 16px;width:100%}
+input[type=text],input[type=email],input[type=password],input[type=number],select{font:600 17px var(--body);color:var(--ink);background:var(--card-solid);border:1.5px solid var(--line);border-radius:14px;padding:13px 16px;width:100%}
 input:focus{border-color:var(--teal);outline:none;box-shadow:0 0 0 3px var(--teal-soft)}
 .label{font:800 12px var(--body);letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
 .muted{color:var(--muted)}
@@ -82,6 +82,8 @@ input:focus{border-color:var(--teal);outline:none;box-shadow:0 0 0 3px var(--tea
 .reto.done .n{color:var(--teal)}
 .reto.done .t{color:var(--muted);font-weight:600}
 .reto .side{display:flex;align-items:center;gap:8px}
+.shoot{display:flex;flex-direction:column;align-items:center;gap:4px}
+.shoot label.again{font-size:11.5px}
 .reto .side img{width:54px;height:54px;object-fit:cover;border-radius:12px;border:2px solid var(--teal)}
 label.btn input,label.again input{position:absolute;inset:0;opacity:0;width:1px;height:1px}
 label.again{font:700 12.5px var(--body);color:var(--muted);text-decoration:underline;cursor:pointer;position:relative}
@@ -92,6 +94,7 @@ label.again{font:700 12.5px var(--body);color:var(--muted);text-decoration:under
 
 /* ---------- panel de los novios ---------- */
 .admin{max-width:1240px;margin:0 auto;padding-top:22px;position:relative}
+.admin.screen{max-width:1500px;padding-top:28px}
 .a-top{display:flex;flex-wrap:wrap;gap:14px 24px;align-items:center;justify-content:space-between;padding-bottom:16px}
 .a-brand{display:flex;align-items:center;gap:14px}
 .a-brand img{width:46px;height:46px}
@@ -229,6 +232,7 @@ const PAIR = `${CONFIG.novio1} + ${CONFIG.novio2}`;
 const HEART = `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-7.5-4.6-9.6-9.4C.9 8 3 4.5 6.6 4.5c2.1 0 3.6 1.1 4.4 2.5.8-1.4 2.3-2.5 4.4-2.5 3.6 0 5.7 3.5 4.2 7.1C19.5 16.4 12 21 12 21z"/></svg>`;
 const BRANCH = () => `<img class="branch" src="assets/eucalipto.webp" alt="">`;
 const LOGO = `<img src="assets/sj.png" alt="Sara y Joshua">`;
+const CAM = `<svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></svg>`;
 function base(){ return DEMO ? CONFIG.urlBase : location.origin + location.pathname; }
 function ago(ts){
   const s = Math.max(0, (Date.now() - new Date(ts).getTime()) / 1000);
@@ -240,8 +244,10 @@ function ago(ts){
 function loadScript(src){
   return new Promise((res, rej) => { const s = document.createElement("script"); s.src = src; s.onload = res; s.onerror = () => rej(new Error("No se pudo cargar " + src)); document.head.appendChild(s); });
 }
-const KEY = "mision-sj";
-let memMe = null;
+const KEY = "mision-sj", PKEY = "mision-sj-panel";
+let memMe = null, memPass = null;
+function getPass(){ try { return localStorage.getItem(PKEY) || memPass; } catch { return memPass; } }
+function setPass(v){ memPass = v; try { v ? localStorage.setItem(PKEY, v) : localStorage.removeItem(PKEY); } catch {} }
 function me(){ try { return JSON.parse(localStorage.getItem(KEY) || "null") || memMe; } catch { return memMe; } }
 function remember(v){ memMe = v; try { v ? localStorage.setItem(KEY, JSON.stringify(v)) : localStorage.removeItem(KEY); } catch {} }
 
@@ -271,10 +277,25 @@ function armed(btn, fn){
    ========================================================= */
 async function liveStore(){
   await loadScript("https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.117.2/dist/umd/supabase.js");
-  const sb = window.supabase.createClient(CONFIG.supabaseUrl, CONFIG.supabaseKey, { auth: { flowType: "pkce", detectSessionInUrl: true, persistSession: true } });
+  const sb = window.supabase.createClient(CONFIG.supabaseUrl, CONFIG.supabaseKey, { auth: { persistSession: false, autoRefreshToken: false, detectSessionInUrl: false } });
   const pub = p => sb.storage.from("fotos").getPublicUrl(p).data.publicUrl;
   const E = r => { if (r.error) throw r.error; return r.data; };
-  const subs = []; let chan = null;
+  const withUrls = d => ({ ...d, photos: (d.photos || []).map(p => ({ ...p, url: pub(p.path) })) });
+  let cache = null, cacheAt = 0;
+  const admin = async (fn, args = {}) => {
+    const d = E(await sb.rpc(fn, { p_pass: getPass(), ...args }));
+    if (d && d.error === "auth") { setPass(null); const e = new Error("auth"); e.auth = true; throw e; }
+    if (d && d.error) throw new Error(d.error);
+    cache = null;
+    return d;
+  };
+  const data = async () => {
+    if (cache && Date.now() - cacheAt < 1500) return cache;
+    const d = E(await sb.rpc("admin_data", { p_pass: getPass() }));
+    if (d && d.error) { setPass(null); const e = new Error("auth"); e.auth = true; throw e; }
+    cache = withUrls(d); cacheAt = Date.now(); return cache;
+  };
+  const removeFiles = async paths => { if (paths && paths.length) { try { await sb.storage.from("fotos").remove(paths); } catch (e) { console.warn(e); } } };
   return {
     async register(name){ return E(await sb.rpc("register", { p_name: name })); },
     async mine(token){
@@ -288,36 +309,21 @@ async function liveStore(){
       E(await sb.storage.from("fotos").upload(path, blob, { contentType: "image/jpeg" }));
       E(await sb.rpc("add_photo", { p_token: m.token, p_mission: mission, p_path: path }));
     },
-    async session(){
-      const { data } = await sb.auth.getSession();
-      const s = data.session; if (!s) return null;
-      const r = await sb.from("admins").select("email");
-      return { email: s.user.email, isAdmin: !r.error && r.data.length > 0 };
-    },
-    async login(email){ E(await sb.auth.signInWithOtp({ email, options: { emailRedirectTo: base() + "?acceso=1", shouldCreateUser: true } })); },
-    async logout(){ await sb.auth.signOut(); },
-    async players(){ return E(await sb.from("players").select("id,card,name,missions,created_at").order("card")); },
-    async photos(){ return E(await sb.from("photos").select("*").order("created_at")).map(p => ({ ...p, url: pub(p.path) })); },
-    async config(){ return E(await sb.from("config").select("*").eq("id", 1).single()); },
-    async saveConfig(retos, n){ E(await sb.from("config").update({ retos, retos_por_persona: n, updated_at: new Date().toISOString() }).eq("id", 1)); },
-    async renamePlayer(id, name){ E(await sb.from("players").update({ name }).eq("id", id)); },
-    async deletePhoto(ph){ await sb.storage.from("fotos").remove([ph.path]); E(await sb.from("photos").delete().eq("id", ph.id)); },
-    async deletePlayer(id){
-      const ph = E(await sb.from("photos").select("path").eq("player_id", id));
-      if (ph.length) await sb.storage.from("fotos").remove(ph.map(p => p.path));
-      E(await sb.from("players").delete().eq("id", id));
-    },
-    async admins(){ return E(await sb.from("admins").select("email").order("email")).map(a => a.email); },
-    async addAdmin(email){ E(await sb.from("admins").insert({ email: email.toLowerCase().trim() })); },
-    async removeAdmin(email){ E(await sb.from("admins").delete().eq("email", email)); },
-    on(fn){
-      subs.push(fn);
-      if (!chan) chan = sb.channel("novios")
-        .on("postgres_changes", { event: "*", schema: "public", table: "photos" }, p => subs.forEach(f => f("photos", p)))
-        .on("postgres_changes", { event: "*", schema: "public", table: "players" }, p => subs.forEach(f => f("players", p)))
-        .subscribe();
-      return () => { const i = subs.indexOf(fn); if (i >= 0) subs.splice(i, 1); };
-    }
+    async status(){ return E(await sb.rpc("admin_status")); },
+    async setup(pass){ const d = E(await sb.rpc("admin_setup", { p_pass: pass })); if (d.error) throw new Error(d.error); setPass(pass); },
+    async login(pass){ const d = E(await sb.rpc("admin_login", { p_pass: pass })); if (d.ok) { setPass(pass); return true; } return false; },
+    async logout(){ setPass(null); },
+    async players(){ return (await data()).players; },
+    async photos(){ return (await data()).photos; },
+    async config(){ return (await data()).config; },
+    async screenKey(){ return (await data()).screen_key; },
+    async saveConfig(retos, n){ await admin("admin_save_config", { p_retos: retos, p_n: n }); },
+    async renamePlayer(id, name){ await admin("admin_rename", { p_id: id, p_name: name }); },
+    async deletePhoto(ph){ const d = await admin("admin_delete_photo", { p_id: ph.id }); await removeFiles(d.paths); },
+    async deletePlayer(id){ const d = await admin("admin_delete_player", { p_id: id }); await removeFiles(d.paths); },
+    async setPassword(nw){ await admin("admin_set_password", { p_new: nw }); setPass(nw); },
+    async newScreenKey(){ return (await admin("admin_new_screen_key")).screen_key; },
+    async screen(key){ const d = E(await sb.rpc("screen_data", { p_key: key })); return d ? withUrls(d) : null; }
   };
 }
 
@@ -342,21 +348,22 @@ function demoStore(){
     g.fillStyle = "rgba(255,255,255,.92)"; g.font = "700 20px Nunito, sans-serif"; g.fillText("foto de ejemplo", 22, 452);
     return c.toDataURL("image/jpeg", .8);
   };
-  const players = [], photos = [], subs = [];
+  const players = [], photos = [];
   const names = ["Lucía","Marcos","Tía Carmen","Pablo","Irene","Abuelo Paco","Nerea","Diego","Alba","Hugo"];
   const t0 = Date.now() - 70 * 60000; let seed = 1;
   names.forEach((n, i) => players.push({ id: "p" + i, token: "t" + i, card: i + 1, name: n, missions: pick(i + 1), created_at: new Date(t0 + i * 90000).toISOString() }));
   [5, 4, 4, 3, 3, 2, 1, 1, 0, 0].forEach((k, i) => players[i].missions.slice(0, k).forEach(m => photos.push({ id: uid(), player_id: players[i].id, card: players[i].card, mission: m, mission_text: cfg.retos[m], url: fake(seed++), created_at: new Date(t0 + ((seed * 131) % 60) * 60000).toISOString() })));
   photos.sort((a, b) => a.created_at.localeCompare(b.created_at));
-  const emit = (t, p) => subs.forEach(f => f(t, p));
-  const admins = ["novios@ejemplo.com"];
+  const emit = () => {};
   return {
     demo: true,
     async register(name){ const card = Math.max(0, ...players.map(p => p.card)) + 1; const p = { id: uid(), token: uid(), card, name, missions: pick(card), created_at: new Date().toISOString() }; players.push(p); emit("players", { new: p }); return { token: p.token, card, name }; },
     async mine(token){ const p = players.find(x => x.token === token); if (!p) return null; return { id: p.id, token, card: p.card, name: p.name, retos: p.missions.map(i => ({ i, text: cfg.retos[i] })), photos: photos.filter(x => x.player_id === p.id) }; },
     async addPhoto(m, mission, blob){ const p = players.find(x => x.id === m.id); const ph = { id: uid(), player_id: p.id, card: p.card, mission, mission_text: cfg.retos[mission], url: URL.createObjectURL(blob), created_at: new Date().toISOString() }; photos.push(ph); emit("photos", { new: ph }); },
-    async session(){ return { email: "novios@ejemplo.com", isAdmin: true }; },
-    async login(){}, async logout(){},
+    async status(){ return { has_password: true }; },
+    async setup(p){ setPass(p); }, async login(p){ setPass(p || "vista-previa"); return true; }, async logout(){ setPass(null); },
+    async screenKey(){ return "ejemplo"; }, async newScreenKey(){ return "ejemplo"; }, async setPassword(){},
+    async screen(){ return { players: players.map(p => ({ ...p })), photos: photos.slice(), config: { retos: cfg.retos.slice(), retos_por_persona: cfg.retos_por_persona } }; },
     async players(){ return players.map(p => ({ ...p })); },
     async photos(){ return photos.slice(); },
     async config(){ return { retos: cfg.retos.slice(), retos_por_persona: cfg.retos_por_persona }; },
@@ -364,9 +371,6 @@ function demoStore(){
     async renamePlayer(id, name){ players.find(p => p.id === id).name = name; },
     async deletePhoto(ph){ const i = photos.findIndex(x => x.id === ph.id); if (i >= 0) photos.splice(i, 1); },
     async deletePlayer(id){ for (let i = photos.length - 1; i >= 0; i--) if (photos[i].player_id === id) photos.splice(i, 1); players.splice(players.findIndex(p => p.id === id), 1); },
-    async admins(){ return admins.slice(); },
-    async addAdmin(e){ admins.push(e.toLowerCase().trim()); }, async removeAdmin(e){ admins.splice(admins.indexOf(e), 1); },
-    on(fn){ subs.push(fn); return () => { const i = subs.indexOf(fn); if (i >= 0) subs.splice(i, 1); }; },
     simulate(){
       const cand = []; players.forEach(p => { const done = new Set(photos.filter(x => x.player_id === p.id).map(x => x.mission)); p.missions.forEach(m => { if (!done.has(m)) cand.push([p, m]); }); });
       if (!cand.length) return; const [p, m] = cand[Math.floor(Math.random() * cand.length)];
@@ -383,7 +387,7 @@ let store, cleanup = () => {};
 function demoBar(cur){
   if (!store.demo) return "";
   const l = (h, t) => `<a href="#${h}" ${cur === h ? 'aria-current="page"' : ""}>${t}</a>`;
-  return `<div class="demo-bar"><span><b>Vista previa</b> con datos de ejemplo</span><nav>${l("inicio", "Invitado: registro")}${l("mision", "Invitado: su misión")}${l("admin", "Panel de los novios")}</nav></div>`;
+  return `<div class="demo-bar"><span><b>Vista previa</b> con datos de ejemplo</span><nav>${l("inicio", "Invitado: registro")}${l("mision", "Invitado: su misión")}${l("admin", "Panel de los novios")}${l("pantalla", "Pantalla en directo")}</nav></div>`;
 }
 
 function viewHome(){
@@ -435,10 +439,10 @@ async function viewMission(){
       ${total && done === total ? `<div class="win">¡Misión cumplida! Los novios verán todas tus fotos. Puedes seguir añadiendo más.</div>` : ""}
       <ol class="retos">${d.retos.map((r, k) => { const ph = byM[r.i]; return `<li class="reto ${ph ? "done" : ""}">
         <span class="n">${k + 1}</span><span class="t">${esc(r.text)}</span>
-        <span class="side">${ph ? `<img src="${esc(ph.url)}" alt="Tu foto"><label class="again">Cambiar<input type="file" accept="image/*" data-m="${r.i}"></label>`
-          : `<label class="btn small">Capturar<input type="file" accept="image/*" data-m="${r.i}"></label>`}</span></li>`; }).join("")}</ol>
+        <span class="side">${ph ? `<img src="${esc(ph.url)}" alt="Tu foto"><span class="alt"><label class="again">Repetir<input type="file" accept="image/*" capture="environment" data-m="${r.i}"></label></span>`
+          : `<span class="shoot"><label class="btn small">${CAM} Capturar<input type="file" accept="image/*" capture="environment" data-m="${r.i}"></label><label class="again">o de la galería<input type="file" accept="image/*" data-m="${r.i}"></label></span>`}</span></li>`; }).join("")}</ol>
       <div class="status" id="st" aria-live="polite"></div>
-      <p class="muted" style="font-size:14px;margin:0">Haz la foto con la cámara de siempre y súbela aquí cuando puedas. Solo la verán los novios.</p>
+      <p class="muted" style="font-size:14px;margin:0">Pulsa Capturar y se abrirá la cámara. La foto se sube sola y solo la verán los novios.</p>
     </section>
     <section class="keep"><span class="label">Tu enlace personal</span>
       <span>Guárdalo para abrir tu misión en otro móvil.</span>
@@ -453,9 +457,10 @@ async function viewMission(){
   app.querySelectorAll("input[type=file]").forEach(inp => inp.addEventListener("change", async () => {
     const f = inp.files[0]; if (!f) return;
     const st = $("#st"); st.className = "status"; st.textContent = "Subiendo foto…";
+    const li = inp.closest(".reto"); if (li) { li.style.opacity = ".6"; const sd = li.querySelector(".side"); if (sd) sd.innerHTML = '<span class="muted" style="font-size:13px;font-weight:700">Subiendo…</span>'; }
     app.querySelectorAll("input[type=file]").forEach(x => x.disabled = true);
     try { const blob = await compress(f); await store.addPhoto({ id: d.id, token: d.token }, +inp.dataset.m, blob); await viewMission(); const s = $("#st"); if (s) { s.className = "status ok"; s.textContent = "Foto guardada."; } }
-    catch (err) { console.error(err); st.className = "status err"; st.textContent = "No se pudo subir la foto. Comprueba la cobertura y prueba otra vez."; app.querySelectorAll("input[type=file]").forEach(x => x.disabled = false); }
+    catch (err) { console.error(err); try { await viewMission(); } catch {} const s2 = $("#st"); if (s2) { s2.className = "status err"; s2.textContent = "No se pudo subir la foto. Comprueba la cobertura y prueba otra vez."; } }
   }));
 }
 
@@ -464,37 +469,47 @@ async function viewMission(){
    ========================================================= */
 let loginNote = "";
 async function viewAdmin(tab){
-  const s = await store.session();
-  if (!s) return viewLogin();
-  if (!s.isAdmin) {
-    app.innerHTML = `<main class="login">${BRANCH()}<h1>Sin acceso</h1><p>La cuenta <b>${esc(s.email)}</b> no está en la lista de los novios. Pide a ${esc(CONFIG.novio1)} o a ${esc(CONFIG.novio2)} que la añadan desde el panel.</p><button class="ghost" id="out">Cerrar sesión</button></main>`;
-    $("#out").addEventListener("click", async () => { await store.logout(); viewLogin(); });
-    return;
-  }
-  const tabs = [["directo", "En directo"], ["invitados", "Invitados"], ["fotos", "Fotos"], ["retos", "Retos"], ["cartel", "Cartel"], ["acceso", "Acceso"]];
+  if (store.demo && !getPass()) setPass("vista-previa");
+  if (!getPass()) return viewLogin();
+  const tabs = [["directo", "En directo"], ["invitados", "Invitados"], ["fotos", "Fotos"], ["retos", "Retos"], ["cartel", "Cartel"], ["acceso", "Contraseña y pantalla"]];
   tab = tabs.some(t => t[0] === tab) ? tab : "directo";
   app.innerHTML = demoBar("admin") + `<main class="admin">
     <header class="a-top"><div class="a-brand">${LOGO}<div><h1>Panel de los novios</h1><p>Misión secreta · ${esc(CONFIG.fecha)}</p></div></div>
-      <div class="a-user"><span>${esc(s.email)}</span><button class="ghost small" id="out">Cerrar sesión</button></div></header>
+      <div class="a-user"><button class="ghost small" id="out">Cerrar sesión</button></div></header>
     <nav class="tabs">${tabs.map(([k, t]) => `<a href="#admin/${k}" ${k === tab ? 'aria-current="page"' : ""}>${t}</a>`).join("")}</nav>
     <section id="tab"></section></main>`;
-  $("#out").addEventListener("click", async () => { cleanup(); await store.logout(); viewLogin(); });
+  $("#out").addEventListener("click", async () => { cleanup(); cleanup = () => {}; await store.logout(); viewLogin(); });
   const el = $("#tab");
-  await ({ directo: tabLive, invitados: tabPlayers, fotos: tabPhotos, retos: tabRetos, cartel: tabPoster, acceso: tabAccess })[tab](el, s);
+  try { await ({ directo: tabLive, invitados: tabPlayers, fotos: tabPhotos, retos: tabRetos, cartel: tabPoster, acceso: tabAccess })[tab](el); }
+  catch (e) { if (e.auth) { cleanup(); cleanup = () => {}; loginNote = "La contraseña ha cambiado o ya no es válida. Vuelve a entrar."; return viewLogin(); } throw e; }
 }
 
-function viewLogin(){
+async function viewLogin(){
+  let st0 = { has_password: true };
+  try { st0 = await store.status(); } catch {}
+  const setup = !st0.has_password;
   app.innerHTML = demoBar("admin") + `<main class="login">${BRANCH()}
     <p class="kicker">Solo para ${esc(PAIR)}</p><h1>Panel de los novios</h1>
-    <p style="margin:0">Escribe tu correo y te enviaremos un enlace para entrar. Ábrelo en este mismo navegador.</p>
-    <form class="form" id="lg"><label class="label" for="em">Correo</label>
-      <input id="em" type="email" autocomplete="email" required placeholder="tu@correo.com">
-      <button type="submit">Enviarme el enlace</button><div class="status ${loginNote ? "err" : ""}" id="st">${esc(loginNote)}</div></form></main>`;
+    <p style="margin:0">${setup ? "Es la primera vez que entráis. Elegid la contraseña del panel: con ella se entra desde cualquier dispositivo." : "Escribe la contraseña del panel."}</p>
+    <form class="form" id="lg">
+      <label class="label" for="pw">${setup ? "Nueva contraseña" : "Contraseña"}</label>
+      <input id="pw" type="password" autocomplete="${setup ? "new-password" : "current-password"}" required minlength="6">
+      ${setup ? `<label class="label" for="pw2">Repítela</label><input id="pw2" type="password" autocomplete="new-password" required minlength="6">` : ""}
+      <button type="submit">${setup ? "Guardar y entrar" : "Entrar"}</button>
+      <div class="status ${loginNote ? "err" : ""}" id="st">${esc(loginNote)}</div></form></main>`;
+  loginNote = "";
+  $("#pw").focus();
   $("#lg").addEventListener("submit", async e => {
-    e.preventDefault(); const b = e.submitter; if (b) b.disabled = true;
-    const st = $("#st"); st.className = "status"; st.textContent = "Enviando…";
-    try { await store.login($("#em").value.trim()); st.className = "status ok"; st.textContent = "Listo. Revisa tu correo y pulsa el enlace (mira también en spam)."; }
-    catch (err) { console.error(err); st.className = "status err"; st.textContent = /rate|seconds/i.test(err.message || "") ? "Has pedido varios enlaces seguidos. Espera un minuto y vuelve a probar." : "No se pudo enviar el enlace. Revisa el correo e inténtalo otra vez."; if (b) b.disabled = false; }
+    e.preventDefault(); const b = e.submitter; const st = $("#st"); const pw = $("#pw").value;
+    if (setup && pw !== $("#pw2").value) { st.className = "status err"; st.textContent = "Las dos contraseñas no coinciden."; return; }
+    if (pw.length < 6) { st.className = "status err"; st.textContent = "Usa al menos 6 caracteres."; return; }
+    if (b) b.disabled = true; st.className = "status"; st.textContent = "Comprobando…";
+    try {
+      if (setup) await store.setup(pw);
+      else if (!(await store.login(pw))) { st.className = "status err"; st.textContent = "Contraseña incorrecta."; if (b) b.disabled = false; return; }
+      const h = location.hash.replace(/^#/, "");
+      viewAdmin(h.split("/")[1]);
+    } catch (err) { console.error(err); st.className = "status err"; st.textContent = "No se pudo entrar. Comprueba la conexión e inténtalo de nuevo."; if (b) b.disabled = false; }
   });
 }
 
@@ -504,9 +519,10 @@ function score(players, photos){
   return map;
 }
 
-async function tabLive(el){
-  let [players, photos, cfg] = await Promise.all([store.players(), store.photos(), store.config()]);
-  let bump = null;
+/* Tablero en directo, compartido por el panel y la pantalla pública */
+async function liveBoard(el, load){
+  let d = await load();
+  let lastId = d.photos.length ? d.photos[d.photos.length - 1].id : null, bump = null;
   el.innerHTML = `<div class="live-head"><div><span class="live-dot">En directo</span><h2 class="live-names">${esc(PAIR)}</h2></div>
     <div class="stats" id="stats"></div><button class="ghost no-print" id="fs">Pantalla completa</button></div>
     <div class="live-grid"><section><div class="spot" id="spot"></div><div class="feed" id="feed"></div></section>
@@ -515,6 +531,7 @@ async function tabLive(el){
   const flash = () => { const sp = $("#spot"); if (!sp) return; sp.classList.remove("flash"); void sp.offsetWidth; sp.classList.add("flash"); };
   const render = () => {
     if (!$("#stats")) return;
+    const { players, photos, config: cfg } = d;
     const sc = score(players, photos), byId = Object.fromEntries(players.map(p => [p.id, p]));
     const list = Object.values(sc).sort((a, b) => b.set.size - a.set.size || a.last - b.last).slice(0, 10);
     const n = Math.max(1, ...players.map(p => p.missions.length));
@@ -531,19 +548,35 @@ async function tabLive(el){
     $("#feed").innerHTML = rec.slice(1, 13).map(ph => `<figure><img src="${esc(ph.url)}" alt="" loading="lazy"><figcaption>${esc(byId[ph.player_id]?.name || "")}</figcaption></figure>`).join("");
   };
   render();
-  let alive = true, timer = null;
-  const reload = (fl) => { clearTimeout(timer); timer = setTimeout(async () => { if (!alive) return; try { [players, photos] = await Promise.all([store.players(), store.photos()]); render(); if (fl) flash(); } catch {} }, 500); };
-  const off = store.on((t, p) => {
-    if (!alive) return;
-    if (store.demo) { if (t === "photos" && p.new) { photos.push(p.new); bump = p.new.player_id; } if (t === "players" && p.new && !players.find(x => x.id === p.new.id)) players.push(p.new); render(); if (t === "photos") flash(); return; }
-    if (t === "photos" && p.eventType === "INSERT") bump = p.new?.player_id;
-    reload(t === "photos" && p.eventType === "INSERT");
-  });
-  const poll = setInterval(() => { if (store.demo) render(); else reload(false); }, 30000);
-  const sim = store.demo ? setInterval(() => store.simulate(), 7000) : null;
+  let alive = true, busy = false;
+  const tick = async () => {
+    if (!alive || busy || document.hidden) return; busy = true;
+    try {
+      if (store.demo) store.simulate();
+      const nd = await load(); if (!alive) return;
+      const newest = nd.photos.length ? nd.photos[nd.photos.length - 1] : null;
+      const isNew = newest && newest.id !== lastId;
+      if (isNew) { lastId = newest.id; bump = newest.player_id; }
+      d = nd; render(); if (isNew) flash();
+    } catch (e) { if (e.auth) { alive = false; loginNote = "Vuelve a entrar."; viewLogin(); } }
+    finally { busy = false; }
+  };
+  const poll = setInterval(tick, store.demo ? 7000 : 6000);
   $("#fs").addEventListener("click", async () => { try { document.fullscreenElement ? await document.exitFullscreen() : await document.documentElement.requestFullscreen(); } catch {} });
   let lock = null; try { lock = await navigator.wakeLock?.request("screen"); } catch {}
-  cleanup = () => { alive = false; off(); clearInterval(poll); sim && clearInterval(sim); clearTimeout(timer); try { lock?.release(); } catch {} };
+  cleanup = () => { alive = false; clearInterval(poll); try { lock?.release(); } catch {} };
+}
+
+async function tabLive(el){
+  await liveBoard(el, async () => { const [players, photos, config] = await Promise.all([store.players(), store.photos(), store.config()]); return { players, photos, config }; });
+}
+
+async function viewScreen(key){
+  const first = await store.screen(key);
+  if (!first) { app.innerHTML = `<main class="login">${BRANCH()}<h1>Enlace no válido</h1><p>Este enlace de pantalla ya no funciona. Pide a los novios el nuevo.</p></main>`; return; }
+  app.innerHTML = demoBar("pantalla") + `<main class="admin screen"><section id="tab"></section></main>`;
+  let firstUsed = false;
+  await liveBoard($("#tab"), async () => { if (!firstUsed) { firstUsed = true; return first; } const d = await store.screen(key); if (!d) throw new Error("clave"); return d; });
 }
 
 async function tabPlayers(el){
@@ -656,18 +689,31 @@ async function tabPoster(el){
   $("#print").addEventListener("click", () => window.print());
 }
 
-async function tabAccess(el, s){
-  const list = await store.admins();
-  el.innerHTML = `<div class="section-title"><h2>Quién puede entrar</h2></div>
-    <div class="panel-box" style="max-width:620px"><ul class="alist">${list.map(e => `<li><span>${esc(e)}${e === (s.email || "").toLowerCase() ? ' <span class="muted" style="font-weight:600">(tú)</span>' : ""}</span>${e === (s.email || "").toLowerCase() ? "" : `<button class="danger small rm" data-e="${esc(e)}">Quitar</button>`}</li>`).join("")}</ul>
-      <form class="row-inline" id="af"><input type="email" id="ae" required placeholder="correo@ejemplo.com" style="flex:1;min-width:220px" aria-label="Correo"><button type="submit">Dar acceso</button></form>
-      <p class="muted" style="font-size:14px;margin:12px 0 0">Esa persona entrará en <b>${esc(base().replace(/^https?:\/\//, ""))}#admin</b> con su correo, igual que tú.</p>
-      <div class="status" id="st"></div></div>`;
-  el.querySelectorAll(".rm").forEach(b => armed(b, async () => { await store.removeAdmin(b.dataset.e); tabAccess(el, s); }));
-  $("#af").addEventListener("submit", async e => {
-    e.preventDefault();
-    try { await store.addAdmin($("#ae").value); tabAccess(el, s); }
-    catch (err) { $("#st").className = "status err"; $("#st").textContent = "No se pudo añadir. Puede que ya tenga acceso."; }
+async function tabAccess(el){
+  const key = await store.screenKey();
+  const screenUrl = `${base()}#pantalla-${key}`;
+  el.innerHTML = `<div class="section-title"><h2>Contraseña y pantalla</h2></div>
+    <div style="display:grid;gap:18px;max-width:720px">
+    <div class="panel-box" style="display:flex;flex-direction:column;gap:12px">
+      <h3 style="font:400 26px var(--display);color:var(--brown)">Pantalla en directo</h3>
+      <p style="margin:0">Abre este enlace en el ordenador del proyector o en la tele. Muestra las fotos y la clasificación sin pedir contraseña. No lo compartáis con los invitados.</p>
+      <div class="row-inline"><input type="text" id="sl" readonly value="${esc(screenUrl)}" aria-label="Enlace de la pantalla" style="flex:1;min-width:240px;font-size:14px"><button class="ghost small" id="cp">Copiar</button><a class="btn small" href="${esc(screenUrl)}" target="_blank" rel="noopener">Abrir</a></div>
+      <div class="row-inline"><button class="danger small" id="nk">Cambiar el enlace</button><span class="muted" style="font-size:13.5px">El enlace anterior dejará de funcionar.</span></div>
+    </div>
+    <form class="panel-box" id="pf" style="display:flex;flex-direction:column;gap:12px">
+      <h3 style="font:400 26px var(--display);color:var(--brown)">Cambiar la contraseña</h3>
+      <label class="label" for="np">Nueva contraseña</label><input type="password" id="np" autocomplete="new-password" minlength="6" required>
+      <label class="label" for="np2">Repítela</label><input type="password" id="np2" autocomplete="new-password" minlength="6" required>
+      <div class="row-inline"><button type="submit">Guardar contraseña</button><span class="status" id="pst"></span></div>
+    </form></div>`;
+  $("#cp").addEventListener("click", async () => { const i = $("#sl"); try { await navigator.clipboard.writeText(i.value); $("#cp").textContent = "Copiado"; } catch { i.select(); $("#cp").textContent = "Selecciónalo y copia"; } });
+  armed($("#nk"), async () => { await store.newScreenKey(); await tabAccess(el); });
+  $("#pf").addEventListener("submit", async e => {
+    e.preventDefault(); const st = $("#pst"), a = $("#np").value, b = $("#np2").value;
+    if (a !== b) { st.className = "status err"; st.textContent = "No coinciden."; return; }
+    if (a.length < 6) { st.className = "status err"; st.textContent = "Usa al menos 6 caracteres."; return; }
+    try { await store.setPassword(a); st.className = "status ok"; st.textContent = "Contraseña cambiada."; $("#pf").reset(); }
+    catch (err) { st.className = "status err"; st.textContent = "No se pudo cambiar. Inténtalo otra vez."; }
   });
 }
 
@@ -687,6 +733,8 @@ async function route(){
     const path = location.hash.replace(/^#/, "").split("?")[0];
     if (path === "mision") await viewMission();
     else if (path === "admin" || path.startsWith("admin/")) await viewAdmin(path.split("/")[1]);
+    else if (path === "pantalla" && store.demo) await viewScreen("ejemplo");
+    else if (path.startsWith("pantalla-")) await viewScreen(path.slice(9));
     else viewHome();
   } catch (e) {
     console.error(e);
@@ -697,12 +745,6 @@ async function route(){
 (async () => {
   try { store = DEMO ? demoStore() : await liveStore(); }
   catch (e) { app.innerHTML = `<main class="guest"><div class="sheet"><h1 class="names" style="font-size:40px">Sin conexión</h1><p>Comprueba la cobertura y recarga la página.</p></div></main>`; return; }
-  const qs = new URLSearchParams(location.search);
-  if (qs.has("acceso") || qs.has("code") || qs.has("error_description")) {
-    const s = await store.session().catch(() => null);
-    if (!s) loginNote = qs.get("error_description") ? "El enlace ha caducado o ya se usó. Pide uno nuevo." : "No se pudo entrar. Abre el enlace en el mismo navegador donde lo pediste, o pide uno nuevo.";
-    history.replaceState(null, "", location.pathname + "#admin");
-  }
   window.addEventListener("hashchange", route);
   route();
 })();
