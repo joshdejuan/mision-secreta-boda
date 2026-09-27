@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="theme-color" content="#F3EEE4">
+<meta name="theme-color" content="#F3EEE4" media="(prefers-color-scheme: light)"><meta name="theme-color" content="#1C1814" media="(prefers-color-scheme: dark)">
 </head>
 <body>
 <title>Sara y Joshua</title>
@@ -22,14 +22,25 @@
   --display:"Italiana", "Didot", "Bodoni 72", Georgia, serif;
   --serif:"Gilda Display", "Cormorant Garamond", Georgia, serif;
   --body:"Nunito", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --btn:#895129; --btn-ink:#FFF9F2; --btn-hover:#6F3E1E; --blend:normal;
+}
+@media screen and (prefers-color-scheme: dark){
+  :root{
+    color-scheme:dark;
+    --paper:#1C1814; --card:rgba(42,35,29,.82); --card-solid:#27211C;
+    --ink:#EFE4D6; --brown:#E3B893; --muted:#B39D87; --line:#3B322B;
+    --teal:#3FD8C8; --teal-deep:#62E2D5; --teal-soft:#15332F;
+    --salmon:#F2A185; --salmon-deep:#F48C6A; --salmon-soft:#3C261E;
+    --btn:#E3B893; --btn-ink:#1C1611; --btn-hover:#F0CFAF; --blend:multiply;
+  }
 }
 *{box-sizing:border-box}
 html{background:var(--paper);overflow-x:clip}
-body{margin:0;min-height:100vh;color:var(--ink);font:16px/1.55 var(--body);background:var(--paper) url("assets/papel.jpg") repeat top center/1100px auto;padding-inline:16px;padding-block:0 56px;overflow-x:clip}
+body{margin:0;min-height:100vh;color:var(--ink);font:16px/1.55 var(--body);background:var(--paper) url("assets/papel.jpg") repeat top center/1100px auto;background-blend-mode:var(--blend);padding-inline:16px;padding-block:0 56px;overflow-x:clip}
 h1,h2,h3{margin:0;font-weight:400;text-wrap:balance}
 a{color:var(--teal-deep)}
-button,.btn{font:700 15px/1 var(--body);border:0;border-radius:999px;padding:13px 20px;cursor:pointer;background:var(--brown);color:#FFF9F2;display:inline-flex;align-items:center;justify-content:center;gap:8px;text-decoration:none;white-space:nowrap;position:relative}
-button:hover,.btn:hover{background:var(--ink)}
+button,.btn{font:700 15px/1 var(--body);border:0;border-radius:999px;padding:13px 20px;cursor:pointer;background:var(--btn);color:var(--btn-ink);display:inline-flex;align-items:center;justify-content:center;gap:8px;text-decoration:none;white-space:nowrap;position:relative}
+button:hover,.btn:hover{background:var(--btn-hover)}
 .ghost{background:transparent!important;color:var(--brown)!important;box-shadow:inset 0 0 0 1.5px var(--line)}
 .ghost:hover{box-shadow:inset 0 0 0 1.5px var(--brown)}
 .danger{background:transparent!important;color:var(--salmon-deep)!important;box-shadow:inset 0 0 0 1.5px var(--salmon-soft)}
@@ -50,7 +61,7 @@ input:focus{border-color:var(--teal);outline:none;box-shadow:0 0 0 3px var(--tea
 .demo-bar{max-width:1240px;margin:0 auto;padding-block:12px;display:flex;flex-wrap:wrap;gap:8px 14px;align-items:center;justify-content:space-between;font-size:13px;color:var(--muted);border-bottom:1px dashed var(--line)}
 .demo-bar nav{display:flex;gap:6px;flex-wrap:wrap}
 .demo-bar a{font:700 13px var(--body);color:var(--brown);text-decoration:none;padding:6px 12px;border-radius:999px;box-shadow:inset 0 0 0 1px var(--line)}
-.demo-bar a[aria-current]{background:var(--brown);color:#FFF9F2;box-shadow:none}
+.demo-bar a[aria-current]{background:var(--btn);color:var(--btn-ink);box-shadow:none}
 
 /* ---------- invitado ---------- */
 .guest{position:relative;max-width:520px;margin:0 auto;padding-top:36px;display:flex;flex-direction:column;gap:22px}
@@ -188,7 +199,7 @@ label.again{font:700 12.5px var(--body);color:var(--muted);text-decoration:under
 .row-inline{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
 .row-inline input[type=number]{width:90px}
 /* cartel */
-.poster{position:relative;overflow:hidden;max-width:520px;margin:0 auto;background:var(--paper) url("assets/papel.jpg") center/cover;border:1px solid var(--line);border-radius:6px;padding:40px 30px 34px;display:flex;flex-direction:column;align-items:center;text-align:center;gap:10px}
+.poster{position:relative;overflow:hidden;max-width:520px;margin:0 auto;background:var(--paper) url("assets/papel.jpg") center/cover;background-blend-mode:var(--blend);border:1px solid var(--line);border-radius:6px;padding:40px 30px 34px;display:flex;flex-direction:column;align-items:center;text-align:center;gap:10px}
 .poster .branch{width:360px;top:130px;left:-150px;transform:rotate(-80deg)}
 .poster>*:not(.branch){position:relative;z-index:1}
 .poster .names{font-size:62px;margin:4px 0 0}
