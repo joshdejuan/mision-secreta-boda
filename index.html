@@ -170,11 +170,11 @@ label.again{cursor:pointer;text-decoration:underline;position:relative}
 const CONFIG = {
   novios: "Sara & Joshua",
   fecha: "",                       // p. ej. "12 de junio de 2027"
-  supabaseUrl: "",                 // Project URL de Supabase (vacío = modo demo)
-  supabaseKey: "",                 // anon public key de Supabase
+  supabaseUrl: "https://kgrtklnkhlqotkpkdmfr.supabase.co",
+  supabaseKey: "sb_publishable_93S0dmDPVoOcOHhXzUs-9Q_eXBLpgGb",   // clave pública, segura en el navegador
   pinAdmin: "1234",                // solo para vosotros: imprimir el cartel y descargar las fotos
   retosPorTarjeta: 5,
-  urlBase: "",                     // vacío = la dirección donde publiques la web
+  urlBase: "https://joshdejuan.github.io/mision-secreta-boda/",
   retos: [
     "El primer paso hacia el altar",
     "El «sí, quiero» visto desde tu sitio",
@@ -244,7 +244,7 @@ async function compress(file, max = 1600){
 
 /* ---------- almacén: Supabase ---------- */
 async function liveStore(){
-  await loadScript("https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js");
+  await loadScript("https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.117.2/dist/umd/supabase.js");
   const sb = window.supabase.createClient(CONFIG.supabaseUrl, CONFIG.supabaseKey);
   const withUrl = r => ({ ...r, url: sb.storage.from("fotos").getPublicUrl(r.path).data.publicUrl });
   const store = {
