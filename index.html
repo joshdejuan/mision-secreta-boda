@@ -6,8 +6,9 @@
 <meta name="theme-color" content="#F3EEE4">
 </head>
 <body>
-<title>Misión Secreta Sara y Joshua</title>
-<link rel="icon" href="assets/favicon.png">
+<title>Sara y Joshua</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2064%2064%22%3E%3Crect%20width%3D%2264%22%20height%3D%2264%22%20rx%3D%2214%22%20fill%3D%22%2323C4B3%22/%3E%3Cpath%20d%3D%22M14%2023h8l4-6h12l4%206h8v24H14z%22%20fill%3D%22none%22%20stroke%3D%22%23fff%22%20stroke-width%3D%224%22%20stroke-linejoin%3D%22round%22/%3E%3Ccircle%20cx%3D%2232%22%20cy%3D%2234%22%20r%3D%227.5%22%20fill%3D%22none%22%20stroke%3D%22%23fff%22%20stroke-width%3D%224%22/%3E%3C/svg%3E">
+<link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2064%2064%22%3E%3Crect%20width%3D%2264%22%20height%3D%2264%22%20rx%3D%2214%22%20fill%3D%22%2323C4B3%22/%3E%3Cpath%20d%3D%22M14%2023h8l4-6h12l4%206h8v24H14z%22%20fill%3D%22none%22%20stroke%3D%22%23fff%22%20stroke-width%3D%224%22%20stroke-linejoin%3D%22round%22/%3E%3Ccircle%20cx%3D%2232%22%20cy%3D%2234%22%20r%3D%227.5%22%20fill%3D%22none%22%20stroke%3D%22%23fff%22%20stroke-width%3D%224%22/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Italiana&family=Gilda+Display&family=Nunito:wght@400;600;700;800&display=swap">
@@ -87,6 +88,10 @@ input:focus{border-color:var(--teal);outline:none;box-shadow:0 0 0 3px var(--tea
 .reto .side img{width:54px;height:54px;object-fit:cover;border-radius:12px;border:2px solid var(--teal)}
 label.btn input,label.again input{position:absolute;inset:0;opacity:0;width:1px;height:1px}
 label.again{font:700 12.5px var(--body);color:var(--muted);text-decoration:underline;cursor:pointer;position:relative}
+.notice{margin:0;font-size:15px;font-weight:700;color:var(--teal-deep);background:var(--teal-soft);border-radius:14px;padding:12px 16px;display:flex;gap:10px;align-items:center}
+.notice svg{flex:none;width:22px;height:22px}
+.spot img{animation:fadein .9s ease}
+@keyframes fadein{from{opacity:0}to{opacity:1}}
 .win{background:var(--teal-soft);border-radius:16px;padding:14px 16px;font-weight:700;color:var(--teal-deep)}
 .keep{font-size:14px;color:var(--muted);display:flex;flex-direction:column;gap:8px}
 .keep .row{display:flex;gap:8px}
@@ -400,6 +405,7 @@ function viewHome(){
       <p class="place">${esc(CONFIG.lugar)}</p>
     </header>
     <p class="intro">Durante la boda serás nuestro fotógrafo encubierto. Escribe tu nombre y recibirás cinco momentos que capturar sin que nadie sospeche.</p>
+    <p class="notice">${CAM} Las fotos que subas aparecerán en la pantalla en directo de la boda.</p>
     ${m ? `<a class="resume" href="#mision">${LOGO}<strong>Seguir como ${esc(m.name)}</strong><small>Tu misión Nº ${pad(m.card)}</small><i>→</i></a>` : ""}
     <form class="sheet form" id="reg">
       <label class="label" for="nombre">${m ? "¿Eres otra persona?" : "Tu nombre"}</label>
@@ -439,10 +445,10 @@ async function viewMission(){
       ${total && done === total ? `<div class="win">¡Misión cumplida! Los novios verán todas tus fotos. Puedes seguir añadiendo más.</div>` : ""}
       <ol class="retos">${d.retos.map((r, k) => { const ph = byM[r.i]; return `<li class="reto ${ph ? "done" : ""}">
         <span class="n">${k + 1}</span><span class="t">${esc(r.text)}</span>
-        <span class="side">${ph ? `<img src="${esc(ph.url)}" alt="Tu foto"><span class="alt"><label class="again">Repetir<input type="file" accept="image/*" capture="environment" data-m="${r.i}"></label></span>`
+        <span class="side">${ph ? `<img src="${esc(ph.url)}" alt="Tu foto"><span class="alt"><label class="again">Cambiar<input type="file" accept="image/*" capture="environment" data-m="${r.i}"></label></span>`
           : `<span class="shoot"><label class="btn small">${CAM} Capturar<input type="file" accept="image/*" capture="environment" data-m="${r.i}"></label><label class="again">o de la galería<input type="file" accept="image/*" data-m="${r.i}"></label></span>`}</span></li>`; }).join("")}</ol>
       <div class="status" id="st" aria-live="polite"></div>
-      <p class="muted" style="font-size:14px;margin:0">Pulsa Capturar y se abrirá la cámara. La foto se sube sola y solo la verán los novios.</p>
+      <p class="muted" style="font-size:14px;margin:0">Pulsa Capturar y se abrirá la cámara. La foto se sube sola y aparecerá en la pantalla en directo de la boda.</p>
     </section>
     <section class="keep"><span class="label">Tu enlace personal</span>
       <span>Guárdalo para abrir tu misión en otro móvil.</span>
@@ -522,7 +528,7 @@ function score(players, photos){
 /* Tablero en directo, compartido por el panel y la pantalla pública */
 async function liveBoard(el, load){
   let d = await load();
-  let lastId = d.photos.length ? d.photos[d.photos.length - 1].id : null, bump = null;
+  let lastId = d.photos.length ? d.photos[d.photos.length - 1].id : null, bump = null, showId = null, spotKey = null;
   el.innerHTML = `<div class="live-head"><div><span class="live-dot">En directo</span><h2 class="live-names">${esc(PAIR)}</h2></div>
     <div class="stats" id="stats"></div><button class="ghost no-print" id="fs">Pantalla completa</button></div>
     <div class="live-grid"><section><div class="spot" id="spot"></div><div class="feed" id="feed"></div></section>
@@ -542,13 +548,20 @@ async function liveBoard(el, load){
     const caught = new Set(photos.map(p => p.mission));
     const pend = cfg.retos.map((t, i) => [t, i]).filter(([, i]) => !caught.has(i));
     $("#pend").innerHTML = pend.length ? pend.slice(0, 12).map(([t]) => `<span>${esc(t)}</span>`).join("") + (pend.length > 12 ? `<span>y ${pend.length - 12} más</span>` : "") : `<span>¡Todos cazados!</span>`;
-    const rec = photos.slice().reverse(), top = rec[0];
-    $("#spot").innerHTML = top ? `<img src="${esc(top.url)}" alt=""><div class="cap"><strong>${esc(top.mission_text || cfg.retos[top.mission] || "")}</strong><span>${esc(byId[top.player_id]?.name || "")} · ${ago(top.created_at)}</span></div>`
-      : `<div class="empty">Las fotos aparecerán aquí en cuanto alguien cumpla un reto.</div>`;
+    const rec = photos.slice().reverse(), top = (showId && photos.find(p => p.id === showId)) || rec[0];
+    const key = top ? top.id + "|" + ago(top.created_at) : "vacio";
+    if (key !== spotKey) { spotKey = key; $("#spot").innerHTML = top ? `<img src="${esc(top.url)}" alt=""><div class="cap"><strong>${esc(top.mission_text || cfg.retos[top.mission] || "")}</strong><span>${esc(byId[top.player_id]?.name || "")} · ${ago(top.created_at)}</span></div>`
+      : `<div class="empty">Las fotos aparecerán aquí en cuanto alguien cumpla un reto.</div>`; }
     $("#feed").innerHTML = rec.slice(1, 13).map(ph => `<figure><img src="${esc(ph.url)}" alt="" loading="lazy"><figcaption>${esc(byId[ph.player_id]?.name || "")}</figcaption></figure>`).join("");
   };
   render();
-  let alive = true, busy = false;
+  let alive = true, busy = false, lastNewAt = Date.now(), cycle = [];
+  const rotate = () => {
+    if (!alive || document.hidden || d.photos.length < 2 || Date.now() - lastNewAt < 25000) return;
+    if (!cycle.length) cycle = d.photos.map(p => p.id).filter(id => id !== showId).sort(() => Math.random() - .5);
+    showId = cycle.shift(); render();
+  };
+  const rot = setInterval(rotate, 9000);
   const tick = async () => {
     if (!alive || busy || document.hidden) return; busy = true;
     try {
@@ -556,7 +569,7 @@ async function liveBoard(el, load){
       const nd = await load(); if (!alive) return;
       const newest = nd.photos.length ? nd.photos[nd.photos.length - 1] : null;
       const isNew = newest && newest.id !== lastId;
-      if (isNew) { lastId = newest.id; bump = newest.player_id; }
+      if (isNew) { lastId = newest.id; bump = newest.player_id; showId = null; lastNewAt = Date.now(); cycle = []; }
       d = nd; render(); if (isNew) flash();
     } catch (e) { if (e.auth) { alive = false; loginNote = "Vuelve a entrar."; viewLogin(); } }
     finally { busy = false; }
@@ -564,7 +577,7 @@ async function liveBoard(el, load){
   const poll = setInterval(tick, store.demo ? 7000 : 6000);
   $("#fs").addEventListener("click", async () => { try { document.fullscreenElement ? await document.exitFullscreen() : await document.documentElement.requestFullscreen(); } catch {} });
   let lock = null; try { lock = await navigator.wakeLock?.request("screen"); } catch {}
-  cleanup = () => { alive = false; clearInterval(poll); try { lock?.release(); } catch {} };
+  cleanup = () => { alive = false; clearInterval(poll); clearInterval(rot); try { lock?.release(); } catch {} };
 }
 
 async function tabLive(el){
