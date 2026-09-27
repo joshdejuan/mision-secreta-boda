@@ -229,6 +229,40 @@ label.again{font:700 12.5px var(--body);color:var(--muted);text-decoration:under
 .alist{list-style:none;margin:0 0 16px;padding:0}
 .alist li{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:11px 0;border-bottom:1px solid var(--line);font-weight:700;overflow-wrap:anywhere}
 
+/* ganador */
+.reveal{position:fixed;inset:0;z-index:100;display:grid;place-items:center;overflow:hidden;color:#F6EFE6;background:radial-gradient(120% 90% at 50% 40%,#123F3A 0%,#0C201D 55%,#070F0E 100%);animation:rv-in .8s ease both;padding:24px}
+@keyframes rv-in{from{opacity:0}to{opacity:1}}
+.reveal canvas{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+.reveal .rv-branch{position:absolute;width:min(46vw,620px);opacity:.35;pointer-events:none}
+.reveal .rv-branch.l{left:-12vw;top:8vh;transform:rotate(-80deg)}
+.reveal .rv-branch.r{right:-12vw;bottom:6vh;transform:rotate(100deg)}
+.rv-stage{position:relative;z-index:2;display:flex;flex-direction:column;align-items:center;text-align:center;gap:clamp(10px,2vh,22px);max-width:1100px;width:100%}
+.rv-kicker{margin:0;font:800 clamp(13px,1.6vw,18px) var(--body);letter-spacing:.28em;text-transform:uppercase;color:#EC8F6E}
+.rv-title{font:800 clamp(24px,3.6vw,46px)/1.15 var(--body);color:#F6EFE6;opacity:0;animation:rv-up .9s .3s ease forwards}
+@keyframes rv-up{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+.rv-slot{min-height:clamp(110px,20vh,230px);display:grid;place-items:center;width:100%}
+.rv-count{font:800 clamp(110px,22vh,240px)/1 var(--body);color:#3FD8C8;animation:rv-pop .9s ease both}
+@keyframes rv-pop{0%{opacity:0;transform:scale(2.2)}35%{opacity:1;transform:scale(1)}100%{opacity:0;transform:scale(.7)}}
+.rv-spin{font:400 clamp(48px,9vw,120px)/1.05 var(--display);color:rgba(246,239,230,.55);filter:blur(1.5px)}
+.rv-name{font:400 clamp(64px,12vw,170px)/1 var(--display);color:#3FD8C8;text-shadow:0 0 40px rgba(63,216,200,.55),0 0 90px rgba(63,216,200,.25);animation:rv-win 1.2s cubic-bezier(.2,1.4,.4,1) both}
+@keyframes rv-win{0%{opacity:0;transform:scale(.4) rotate(-4deg)}60%{opacity:1;transform:scale(1.08)}100%{transform:scale(1)}}
+.rv-meta{margin:0;font:800 clamp(16px,2.2vw,26px) var(--body);color:#E3B893;opacity:0}
+.rv-meta.on{animation:rv-up .8s ease forwards}
+.rv-photos{display:flex;gap:clamp(8px,1.2vw,16px);justify-content:center;flex-wrap:wrap}
+.rv-photos img{width:clamp(80px,12vw,170px);aspect-ratio:1;object-fit:cover;border-radius:14px;border:3px solid #F6EFE6;box-shadow:0 10px 30px rgba(0,0,0,.45);opacity:0;animation:rv-card .7s ease forwards}
+.rv-photos img:nth-child(odd){--r:-4deg}.rv-photos img:nth-child(even){--r:3deg}
+@keyframes rv-card{from{opacity:0;transform:translateY(30px) rotate(0)}to{opacity:1;transform:rotate(var(--r))}}
+.rv-podium{display:flex;gap:clamp(16px,3vw,40px);justify-content:center;flex-wrap:wrap;opacity:0;font:700 clamp(14px,1.7vw,20px) var(--body);color:rgba(246,239,230,.8)}
+.rv-podium.on{animation:rv-up .8s ease forwards}
+.rv-podium b{color:#EC8F6E;margin-right:6px}
+.rv-close{position:absolute;z-index:3;top:calc(16px + env(safe-area-inset-top,0px));right:16px;background:rgba(246,239,230,.12)!important;color:#F6EFE6!important;box-shadow:inset 0 0 0 1.5px rgba(246,239,230,.3)}
+.rv-close:hover{background:rgba(246,239,230,.22)!important}
+.win-actions{display:flex;gap:10px;flex-wrap:wrap}
+.win-list{list-style:none;margin:10px 0 0;padding:0}
+.win-list li{display:flex;gap:12px;align-items:baseline;padding:8px 0;border-bottom:1px solid var(--line);font-weight:700}
+.win-list li b{color:var(--salmon);min-width:28px}
+details.peek summary{cursor:pointer;font-weight:800;color:var(--brown)}
+@media (prefers-reduced-motion:reduce){.reveal *{animation-duration:.01s!important;animation-delay:0s!important}}
 @media print{
   body{background:#fff;padding:0}
   .demo-bar,.a-top,.tabs,.section-title,.no-print{display:none!important}
@@ -382,6 +416,7 @@ async function liveStore(){
     async deletePlayer(id){ const d = await admin("admin_delete_player", { p_id: id }); await removeFiles(d.paths); },
     async setPassword(nw){ await admin("admin_set_password", { p_new: nw }); setPass(nw); },
     async newScreenKey(){ return (await admin("admin_new_screen_key")).screen_key; },
+    async reveal(on){ await admin("admin_reveal", { p_on: !!on }); },
     async screen(key){ const d = E(await sb.rpc("screen_data", { p_key: key })); return d ? withUrls(d) : null; }
   };
 }
@@ -407,7 +442,7 @@ function demoStore(){
     g.fillStyle = "rgba(255,255,255,.92)"; g.font = "700 20px Nunito, sans-serif"; g.fillText("foto de ejemplo", 22, 452);
     return c.toDataURL("image/jpeg", .8);
   };
-  const players = [], photos = [];
+  const players = [], photos = []; let demoReveal = null;
   const names = ["Lucía","Marcos","Tía Carmen","Pablo","Irene","Abuelo Paco","Nerea","Diego","Alba","Hugo"];
   const t0 = Date.now() - 70 * 60000; let seed = 1;
   names.forEach((n, i) => players.push({ id: "p" + i, token: "t" + i, card: i + 1, name: n, missions: pick(i + 1), created_at: new Date(t0 + i * 90000).toISOString() }));
@@ -422,7 +457,8 @@ function demoStore(){
     async status(){ return { has_password: true }; },
     async setup(p){ setPass(p); }, async login(p){ setPass(p || "vista-previa"); return true; }, async logout(){ setPass(null); },
     async screenKey(){ return "ejemplo"; }, async newScreenKey(){ return "ejemplo"; }, async setPassword(){},
-    async screen(){ return { players: players.map(p => ({ ...p })), photos: photos.slice(), config: { retos: cfg.retos.slice(), retos_por_persona: cfg.retos_por_persona } }; },
+    async reveal(on){ demoReveal = on ? new Date().toISOString() : null; },
+    async screen(){ return { players: players.map(p => ({ ...p })), photos: photos.slice(), config: { retos: cfg.retos.slice(), retos_por_persona: cfg.retos_por_persona }, reveal_at: demoReveal, now: new Date().toISOString() }; },
     async players(){ return players.map(p => ({ ...p })); },
     async photos(){ return photos.slice(); },
     async config(){ return { retos: cfg.retos.slice(), retos_por_persona: cfg.retos_por_persona }; },
@@ -531,7 +567,7 @@ let loginNote = "";
 async function viewAdmin(tab){
   if (store.demo && !getPass()) setPass("vista-previa");
   if (!getPass()) return viewLogin();
-  const tabs = [["directo", "En directo"], ["invitados", "Invitados"], ["fotos", "Fotos"], ["retos", "Retos"], ["cartel", "Cartel"], ["acceso", "Contraseña y pantalla"]];
+  const tabs = [["directo", "En directo"], ["invitados", "Invitados"], ["fotos", "Fotos"], ["retos", "Retos"], ["cartel", "Cartel"], ["ganador", "Ganador"], ["acceso", "Contraseña y pantalla"]];
   tab = tabs.some(t => t[0] === tab) ? tab : "directo";
   app.innerHTML = demoBar("admin") + `<main class="admin">
     <header class="a-top"><div class="a-brand">${LOGO}<div><h1>Panel Admin</h1><p>Misión secreta · ${esc(CONFIG.fecha)}</p></div></div>
@@ -540,7 +576,7 @@ async function viewAdmin(tab){
     <section id="tab"></section></main>`;
   $("#out").addEventListener("click", async () => { cleanup(); cleanup = () => {}; await store.logout(); viewLogin(); });
   const el = $("#tab");
-  try { await ({ directo: tabLive, invitados: tabPlayers, fotos: tabPhotos, retos: tabRetos, cartel: tabPoster, acceso: tabAccess })[tab](el); }
+  try { await ({ directo: tabLive, invitados: tabPlayers, fotos: tabPhotos, retos: tabRetos, cartel: tabPoster, ganador: tabWinner, acceso: tabAccess })[tab](el); }
   catch (e) { if (e.auth) { cleanup(); cleanup = () => {}; loginNote = "La contraseña ha cambiado o ya no es válida. Vuelve a entrar."; return viewLogin(); } throw e; }
 }
 
@@ -642,8 +678,13 @@ async function viewScreen(key){
   const first = await store.screen(key);
   if (!first) { app.innerHTML = `<main class="login">${BRANCH()}<h1>Enlace no válido</h1><p>Este enlace de pantalla ya no funciona. Pide a los novios el nuevo.</p></main>`; return; }
   app.innerHTML = demoBar("pantalla") + `<main class="admin screen"><section id="tab"></section></main>`;
-  let firstUsed = false;
-  await liveBoard($("#tab"), async () => { if (!firstUsed) { firstUsed = true; return first; } const d = await store.screen(key); if (!d) throw new Error("clave"); return d; });
+  let firstUsed = false, seen = first.reveal_at && (new Date(first.now) - new Date(first.reveal_at) > 60000) ? first.reveal_at : null;
+  const watch = d => {
+    if (d.reveal_at && d.reveal_at !== seen) { seen = d.reveal_at; playReveal(d); }
+    else if (!d.reveal_at && revealOpen) { seen = null; revealOpen.close(); }
+    return d;
+  };
+  await liveBoard($("#tab"), async () => { if (!firstUsed) { firstUsed = true; return watch(first); } const d = await store.screen(key); if (!d) throw new Error("clave"); return watch(d); });
 }
 
 async function tabPlayers(el){
@@ -785,10 +826,139 @@ async function tabAccess(el){
 }
 
 /* =========================================================
+   GANADOR · momento sorpresa
+   ========================================================= */
+function ranking(d){
+  const sc = score(d.players, d.photos);
+  return Object.values(sc).filter(s => s.set.size > 0).sort((a, b) => b.set.size - a.set.size || a.last - b.last);
+}
+const wait = ms => new Promise(r => setTimeout(r, ms));
+let revealOpen = null;
+
+function sound(){
+  let ctx = null;
+  try { ctx = new (window.AudioContext || window.webkitAudioContext)(); } catch { return { roll(){}, crash(){}, stop(){} }; }
+  const noise = (dur, gain, freq) => {
+    try {
+      const len = Math.floor(ctx.sampleRate * dur), buf = ctx.createBuffer(1, len, ctx.sampleRate), ch = buf.getChannelData(0);
+      for (let i = 0; i < len; i++) ch[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / len, 2);
+      const src = ctx.createBufferSource(); src.buffer = buf;
+      const f = ctx.createBiquadFilter(); f.type = freq > 3000 ? "highpass" : "bandpass"; f.frequency.value = freq;
+      const g = ctx.createGain(); g.gain.value = gain;
+      src.connect(f).connect(g).connect(ctx.destination); src.start();
+    } catch {}
+  };
+  let timer = null;
+  return {
+    roll(ms){ const end = Date.now() + ms; let v = .12; timer = setInterval(() => { if (Date.now() > end) return clearInterval(timer); v = Math.min(.5, v + .01); noise(.08, v, 180); }, 55); },
+    crash(){ clearInterval(timer); noise(2.2, .5, 5000); noise(.5, .9, 90); },
+    stop(){ clearInterval(timer); try { ctx.close(); } catch {} }
+  };
+}
+
+function confetti(canvas){
+  const g = canvas.getContext("2d"), cols = ["#23C4B3", "#3FD8C8", "#EC8F6E", "#E3B893", "#F6EFE6", "#F2A185"];
+  let W, H, parts = [], raf = null, until = 0;
+  const size = () => { W = canvas.width = canvas.clientWidth * devicePixelRatio; H = canvas.height = canvas.clientHeight * devicePixelRatio; };
+  size(); addEventListener("resize", size);
+  const burst = (x, y, n, spread, up) => { for (let i = 0; i < n; i++) { const a = -Math.PI / 2 + (Math.random() - .5) * spread; const v = (up || 14) * (0.5 + Math.random()) * devicePixelRatio; parts.push({ x, y, vx: Math.cos(a) * v, vy: Math.sin(a) * v, w: (6 + Math.random() * 8) * devicePixelRatio, h: (8 + Math.random() * 12) * devicePixelRatio, r: Math.random() * 6, vr: (Math.random() - .5) * .3, c: cols[i % cols.length], leaf: Math.random() < .25 }); } };
+  const step = () => {
+    g.clearRect(0, 0, W, H);
+    if (Date.now() < until && Math.random() < .5) { const x = Math.random() * W; parts.push({ x, y: -20, vx: (Math.random() - .5) * 2, vy: 2 + Math.random() * 3, w: 8 * devicePixelRatio, h: 12 * devicePixelRatio, r: 0, vr: (Math.random() - .5) * .2, c: cols[Math.floor(Math.random() * cols.length)], leaf: Math.random() < .3 }); }
+    parts = parts.filter(p => p.y < H + 60);
+    for (const p of parts) {
+      p.vy += .22 * devicePixelRatio; p.vx *= .99; p.vy *= .99; p.x += p.vx + Math.sin(p.y / 40) * .6; p.y += p.vy; p.r += p.vr;
+      g.save(); g.translate(p.x, p.y); g.rotate(p.r); g.fillStyle = p.c;
+      if (p.leaf) { g.beginPath(); g.ellipse(0, 0, p.w * .7, p.h * .45, 0, 0, 7); g.fill(); } else g.fillRect(-p.w / 2, -p.h / 2, p.w, p.h * .5);
+      g.restore();
+    }
+    raf = requestAnimationFrame(step);
+  };
+  step();
+  return {
+    fire(){ burst(W * .1, H, 140, 1.1, 22); burst(W * .9, H, 140, 1.1, 22); burst(W / 2, H * .45, 120, 6.3, 12); until = Date.now() + 7000; },
+    stop(){ cancelAnimationFrame(raf); removeEventListener("resize", size); }
+  };
+}
+
+async function playReveal(d, opts = {}){
+  if (revealOpen) revealOpen.close();
+  const rank = ranking(d), winner = rank[0];
+  const el = document.createElement("div");
+  el.className = "reveal"; el.setAttribute("role", "dialog"); el.setAttribute("aria-label", "Ganador de la misión secreta");
+  el.innerHTML = `<canvas></canvas><img class="rv-branch l" src="assets/eucalipto.webp" alt=""><img class="rv-branch r" src="assets/eucalipto.webp" alt="">
+    <div class="rv-stage"><p class="rv-kicker">Misión secreta · ${esc(PAIR)}</p>
+      <h2 class="rv-title">${winner ? "Y el mejor fotógrafo encubierto es…" : "Todavía nadie ha cumplido ningún reto"}</h2>
+      <div class="rv-slot" aria-live="polite"></div><p class="rv-meta"></p><div class="rv-photos"></div><div class="rv-podium"></div></div>
+    <button class="rv-close" type="button">Cerrar</button>`;
+  document.body.appendChild(el);
+  let alive = true;
+  const fx = confetti(el.querySelector("canvas")), snd = opts.sound ? sound() : null;
+  const close = () => { if (!alive) return; alive = false; fx.stop(); snd?.stop(); el.style.transition = "opacity .5s"; el.style.opacity = "0"; setTimeout(() => el.remove(), 500); revealOpen = null; };
+  revealOpen = { close };
+  el.querySelector(".rv-close").addEventListener("click", () => { close(); opts.onClose?.(); });
+  if (!winner) return;
+  const slot = el.querySelector(".rv-slot");
+  const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  await wait(1800);
+  if (!reduce) {
+    for (const n of ["3", "2", "1"]) { if (!alive) return; slot.innerHTML = `<span class="rv-count">${n}</span>`; await wait(950); }
+    const names = d.players.map(p => p.name).filter(Boolean);
+    snd?.roll(3600);
+    let delay = 55; const start = Date.now();
+    while (alive && Date.now() - start < 3600) { slot.innerHTML = `<span class="rv-spin">${esc(names[Math.floor(Math.random() * names.length)])}</span>`; await wait(delay); delay = Math.min(420, delay * 1.09); }
+  }
+  if (!alive) return;
+  snd?.crash();
+  slot.innerHTML = `<span class="rv-name">${esc(winner.p.name)}</span>`;
+  fx.fire();
+  const meta = el.querySelector(".rv-meta");
+  meta.textContent = `${winner.set.size} de ${winner.p.missions.length} retos cumplidos · ${winner.count} ${winner.count === 1 ? "foto" : "fotos"}`;
+  await wait(900); meta.classList.add("on");
+  const pics = d.photos.filter(p => p.player_id === winner.p.id).slice(-5);
+  el.querySelector(".rv-photos").innerHTML = pics.map((p, i) => `<img src="${esc(p.url)}" alt="" style="animation-delay:${i * .25}s">`).join("");
+  await wait(1500 + pics.length * 250);
+  const pod = rank.slice(1, 3);
+  if (pod.length) { const po = el.querySelector(".rv-podium"); po.innerHTML = pod.map((s, i) => `<span><b>${i + 2}º</b>${esc(s.p.name)} · ${s.set.size} retos</span>`).join(""); po.classList.add("on"); }
+}
+
+async function tabWinner(el){
+  const d = await (async () => { const [players, photos, config] = await Promise.all([store.players(), store.photos(), store.config()]); return { players, photos, config }; })();
+  const rank = ranking(d);
+  el.innerHTML = `<div class="section-title"><h2>Desvelar al ganador</h2></div>
+    <div style="display:grid;gap:18px;max-width:760px">
+    <div class="panel-box" style="display:flex;flex-direction:column;gap:14px">
+      <p style="margin:0">Lanza el momento sorpresa: cuenta atrás, nombres girando como una ruleta y el ganador con confeti y sus fotos. Gana quien más retos haya cumplido; si hay empate, quien los terminó antes.</p>
+      <div class="win-actions">
+        <button id="rv-screen">Desvelar en la pantalla en directo</button>
+        <button class="ghost" id="rv-here">Desvelar en este dispositivo</button>
+        <button class="ghost small" id="rv-off">Quitar de la pantalla</button>
+      </div>
+      <p class="muted" style="margin:0;font-size:14px">"En la pantalla en directo" aparece en unos segundos en el ordenador del proyector que tenga abierto el enlace de la pantalla. "En este dispositivo" lo reproduce aquí mismo, con sonido de redoble.</p>
+      <div class="status" id="rv-st"></div>
+    </div>
+    <details class="panel-box peek"><summary>Ver el podio antes (sin sorpresa)</summary>
+      ${rank.length ? `<ol class="win-list">${rank.slice(0, 5).map((s, i) => `<li><b>${i + 1}º</b><span>${esc(s.p.name)}</span><span class="muted" style="margin-left:auto">${s.set.size}/${s.p.missions.length} retos · ${s.count} fotos</span></li>`).join("")}</ol>` : `<p class="muted">Todavía nadie ha cumplido ningún reto.</p>`}
+    </details></div>`;
+  const st = $("#rv-st");
+  $("#rv-here").addEventListener("click", () => playReveal(d, { sound: true }));
+  $("#rv-screen").addEventListener("click", async () => {
+    st.className = "status"; st.textContent = "Enviando a la pantalla…";
+    try { await store.reveal(true); st.className = "status ok"; st.textContent = "¡En marcha! La pantalla lo mostrará en unos segundos."; }
+    catch (e) { st.className = "status err"; st.textContent = "No se pudo enviar. Inténtalo otra vez."; }
+  });
+  $("#rv-off").addEventListener("click", async () => {
+    try { await store.reveal(false); st.className = "status ok"; st.textContent = "Quitado de la pantalla."; }
+    catch { st.className = "status err"; st.textContent = "No se pudo quitar. Inténtalo otra vez."; }
+  });
+}
+
+/* =========================================================
    RUTAS
    ========================================================= */
 async function route(){
   cleanup(); cleanup = () => {};
+  if (revealOpen) revealOpen.close();
   const tok = location.hash.match(/^#m-([0-9a-z-]{8,})$/i);
   if (tok) {
     const d = await store.mine(tok[1]).catch(() => null);
