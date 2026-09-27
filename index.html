@@ -98,7 +98,7 @@ label.again{font:700 12.5px var(--body);color:var(--muted);text-decoration:under
 .a-top{display:flex;flex-wrap:wrap;gap:14px 24px;align-items:center;justify-content:space-between;padding-bottom:16px}
 .a-brand{display:flex;align-items:center;gap:14px}
 .a-brand img{width:46px;height:46px}
-.a-brand h1{font:400 32px/1 var(--display);color:var(--teal)}
+.a-brand h1{font:800 26px/1.1 var(--body);color:var(--teal-deep)}
 .a-brand p{margin:2px 0 0;font-size:13px;color:var(--muted)}
 .a-user{display:flex;align-items:center;gap:10px;font-size:13.5px;color:var(--muted);flex-wrap:wrap}
 .tabs{display:flex;gap:4px;overflow-x:auto;border-bottom:1px solid var(--line);margin-bottom:24px;scrollbar-width:none}
@@ -106,22 +106,22 @@ label.again{font:700 12.5px var(--body);color:var(--muted);text-decoration:under
 .tabs a[aria-current]{color:var(--brown);border-color:var(--teal)}
 .panel-box{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:20px}
 .section-title{display:flex;flex-wrap:wrap;gap:12px;align-items:flex-end;justify-content:space-between;margin-bottom:18px}
-.section-title h2{font:400 34px/1.05 var(--display);color:var(--brown)}
+.section-title h2{font:800 28px/1.15 var(--body);color:var(--brown)}
 .tools{display:flex;gap:8px;flex-wrap:wrap}
 .login{max-width:440px;margin:40px auto;display:flex;flex-direction:column;gap:14px;position:relative}
 .login>*:not(.branch){position:relative;z-index:1}
-.login h1{font:400 44px/1 var(--display);color:var(--teal)}
+.login h1{font:800 34px/1.1 var(--body);color:var(--teal-deep)}
 .login .branch{width:320px;top:-80px;right:-150px;transform:rotate(-30deg);opacity:.9}
 
 /* directo */
 .live-head{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:18px 34px;margin-bottom:20px}
-.live-dot{display:inline-flex;align-items:center;gap:8px;font:800 12px var(--body);letter-spacing:.16em;text-transform:uppercase;color:var(--salmon-deep)}
-.live-dot::before{content:"";width:9px;height:9px;border-radius:50%;background:var(--salmon);animation:pulse 1.6s infinite}
+.live-dot{display:inline-flex;align-items:center;gap:12px;font:800 20px var(--body);letter-spacing:.16em;text-transform:uppercase;color:var(--salmon-deep)}
+.live-dot::before{content:"";width:14px;height:14px;border-radius:50%;background:var(--salmon);animation:pulse 1.6s infinite}
 @keyframes pulse{50%{opacity:.25}}
 .live-names{font:400 clamp(40px,5vw,64px)/1 var(--display);color:var(--teal);margin-top:4px}
 .stats{display:flex;gap:30px;flex-wrap:wrap}
-.stat b{display:block;font:400 clamp(34px,4vw,50px)/1 var(--serif);color:var(--brown);font-variant-numeric:tabular-nums}
-.stat span{font-size:13px;color:var(--muted);font-weight:700}
+.stat b{display:block;font:800 clamp(34px,4vw,52px)/1 var(--body);color:var(--brown);font-variant-numeric:tabular-nums}
+.stat span{font-size:14px;color:var(--muted);font-weight:700}
 .live-grid{display:grid;grid-template-columns:minmax(0,1.6fr) minmax(0,1fr);gap:22px;align-items:start}
 @media (max-width:880px){.live-grid{grid-template-columns:1fr}}
 .spot{position:relative;border-radius:22px;overflow:hidden;background:var(--card-solid);border:1px solid var(--line);aspect-ratio:4/3;max-width:100%}
@@ -136,11 +136,11 @@ label.again{font:700 12.5px var(--body);color:var(--muted);text-decoration:under
 .feed figure{margin:0;position:relative;aspect-ratio:1;border-radius:14px;overflow:hidden;background:var(--card-solid)}
 .feed img{width:100%;height:100%;object-fit:cover;display:block}
 .feed figcaption{position:absolute;inset:auto 0 0 0;font:700 11.5px/1.2 var(--body);color:#fff;padding:18px 8px 7px;background:linear-gradient(transparent,rgba(58,30,12,.75))}
-.board h3{font:400 30px var(--display);color:var(--brown);margin-bottom:6px}
+.board h3{font:800 24px var(--body);color:var(--brown);margin-bottom:6px}
 .rank{list-style:none;margin:0;padding:0}
 .rank li{display:grid;grid-template-columns:30px 1fr auto;gap:10px;align-items:center;padding:11px 0;border-bottom:1px solid var(--line);transition:background .5s}
 .rank li:last-child{border-bottom:0}
-.rank .pos{font:400 20px var(--serif);color:var(--muted);font-variant-numeric:tabular-nums}
+.rank .pos{font:800 18px var(--body);color:var(--muted);font-variant-numeric:tabular-nums}
 .rank li:first-child .pos{color:var(--salmon)}
 .rank .who{font-weight:800;min-width:0;overflow-wrap:anywhere}
 .rank .who small{display:block;font-weight:600;font-size:12px;color:var(--muted)}
@@ -148,7 +148,7 @@ label.again{font:700 12.5px var(--body);color:var(--muted);text-decoration:under
 .dots{display:flex;gap:4px;align-items:center}
 .dots i{width:10px;height:10px;border-radius:50%;background:var(--line)}
 .dots i.on{background:var(--teal)}
-.dots b{font:400 22px var(--serif);min-width:24px;text-align:right;color:var(--brown)}
+.dots b{font:800 20px var(--body);min-width:24px;text-align:right;color:var(--brown)}
 .chips{display:flex;flex-wrap:wrap;gap:6px}
 .chips span{font-size:13px;font-weight:600;padding:5px 11px;border-radius:999px;background:var(--salmon-soft);color:var(--ink)}
 
@@ -228,7 +228,7 @@ const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt
 const pad = n => String(n).padStart(2, "0");
 const uid = () => Math.random().toString(36).slice(2) + Date.now().toString(36);
 const app = $("#app");
-const PAIR = `${CONFIG.novio1} + ${CONFIG.novio2}`;
+const PAIR = `${CONFIG.novio1}&${CONFIG.novio2}`;
 const HEART = `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-7.5-4.6-9.6-9.4C.9 8 3 4.5 6.6 4.5c2.1 0 3.6 1.1 4.4 2.5.8-1.4 2.3-2.5 4.4-2.5 3.6 0 5.7 3.5 4.2 7.1C19.5 16.4 12 21 12 21z"/></svg>`;
 const BRANCH = () => `<img class="branch" src="assets/eucalipto.webp" alt="">`;
 const LOGO = `<img src="assets/sj.png" alt="Sara y Joshua">`;
@@ -387,7 +387,7 @@ let store, cleanup = () => {};
 function demoBar(cur){
   if (!store.demo) return "";
   const l = (h, t) => `<a href="#${h}" ${cur === h ? 'aria-current="page"' : ""}>${t}</a>`;
-  return `<div class="demo-bar"><span><b>Vista previa</b> con datos de ejemplo</span><nav>${l("inicio", "Invitado: registro")}${l("mision", "Invitado: su misión")}${l("admin", "Panel de los novios")}${l("pantalla", "Pantalla en directo")}</nav></div>`;
+  return `<div class="demo-bar"><span><b>Vista previa</b> con datos de ejemplo</span><nav>${l("inicio", "Invitado: registro")}${l("mision", "Invitado: su misión")}${l("admin", "Panel Admin")}${l("pantalla", "Pantalla en directo")}</nav></div>`;
 }
 
 function viewHome(){
@@ -395,7 +395,7 @@ function viewHome(){
   app.innerHTML = demoBar("inicio") + `<main class="guest">${BRANCH()}
     <header class="hero">
       <p class="kicker">Tienes una misión secreta ${HEART}</p>
-      <h1 class="names"><span>${esc(CONFIG.novio1)}</span><span>+ ${esc(CONFIG.novio2)}</span></h1>
+      <h1 class="names"><span>${esc(CONFIG.novio1)}</span><span>&amp;${esc(CONFIG.novio2)}</span></h1>
       <p class="date">${esc(CONFIG.fecha)}</p>
       <p class="place">${esc(CONFIG.lugar)}</p>
     </header>
@@ -474,7 +474,7 @@ async function viewAdmin(tab){
   const tabs = [["directo", "En directo"], ["invitados", "Invitados"], ["fotos", "Fotos"], ["retos", "Retos"], ["cartel", "Cartel"], ["acceso", "Contraseña y pantalla"]];
   tab = tabs.some(t => t[0] === tab) ? tab : "directo";
   app.innerHTML = demoBar("admin") + `<main class="admin">
-    <header class="a-top"><div class="a-brand">${LOGO}<div><h1>Panel de los novios</h1><p>Misión secreta · ${esc(CONFIG.fecha)}</p></div></div>
+    <header class="a-top"><div class="a-brand">${LOGO}<div><h1>Panel Admin</h1><p>Misión secreta · ${esc(CONFIG.fecha)}</p></div></div>
       <div class="a-user"><button class="ghost small" id="out">Cerrar sesión</button></div></header>
     <nav class="tabs">${tabs.map(([k, t]) => `<a href="#admin/${k}" ${k === tab ? 'aria-current="page"' : ""}>${t}</a>`).join("")}</nav>
     <section id="tab"></section></main>`;
@@ -489,7 +489,7 @@ async function viewLogin(){
   try { st0 = await store.status(); } catch {}
   const setup = !st0.has_password;
   app.innerHTML = demoBar("admin") + `<main class="login">${BRANCH()}
-    <p class="kicker">Solo para ${esc(PAIR)}</p><h1>Panel de los novios</h1>
+    <p class="kicker">Solo para ${esc(PAIR)}</p><h1>Panel Admin</h1>
     <p style="margin:0">${setup ? "Es la primera vez que entráis. Elegid la contraseña del panel: con ella se entra desde cualquier dispositivo." : "Escribe la contraseña del panel."}</p>
     <form class="form" id="lg">
       <label class="label" for="pw">${setup ? "Nueva contraseña" : "Contraseña"}</label>
@@ -535,7 +535,7 @@ async function liveBoard(el, load){
     const sc = score(players, photos), byId = Object.fromEntries(players.map(p => [p.id, p]));
     const list = Object.values(sc).sort((a, b) => b.set.size - a.set.size || a.last - b.last).slice(0, 10);
     const n = Math.max(1, ...players.map(p => p.missions.length));
-    $("#stats").innerHTML = `<div class="stat"><b>${players.length}</b><span>agentes</span></div><div class="stat"><b>${photos.length}</b><span>fotos</span></div><div class="stat"><b>${Object.values(sc).reduce((a, s) => a + s.set.size, 0)}</b><span>retos cumplidos</span></div>`;
+    $("#stats").innerHTML = `<div class="stat"><b>${players.length}</b><span>participantes</span></div><div class="stat"><b>${photos.length}</b><span>fotos</span></div><div class="stat"><b>${Object.values(sc).reduce((a, s) => a + s.set.size, 0)}</b><span>retos cumplidos</span></div>`;
     $("#rank").innerHTML = list.length ? list.map((s, i) => `<li class="${bump === s.p.id ? "bump" : ""}"><span class="pos">${i + 1}</span><span class="who">${esc(s.p.name)}<small>Misión Nº ${pad(s.p.card)}</small></span>
       <span class="dots">${Array.from({ length: n }, (_, k) => `<i class="${k < s.set.size ? "on" : ""}"></i>`).join("")}<b>${s.set.size}</b></span></li>`).join("")
       : `<li><span></span><span class="muted">Todavía nadie se ha registrado.</span><span></span></li>`;
@@ -676,7 +676,7 @@ async function tabPoster(el){
   el.innerHTML = `<div class="section-title"><h2>Cartel para las mesas</h2><div class="tools"><button id="print" ${store.demo ? 'disabled title="Disponible en tu web"' : ""}>Imprimir cartel</button></div></div>
     <article class="poster">${BRANCH()}
       <p class="kicker">Tienes una misión secreta ${HEART}</p>
-      <h2 class="names"><span>${esc(CONFIG.novio1)}</span><span>+ ${esc(CONFIG.novio2)}</span></h2>
+      <h2 class="names"><span>${esc(CONFIG.novio1)}</span><span>&amp;${esc(CONFIG.novio2)}</span></h2>
       <p class="date">${esc(CONFIG.fecha)}</p>
       <p class="lead">Escanea, escribe tu nombre y recibirás cinco momentos secretos que fotografiar durante la boda.</p>
       <div class="qrbox" id="qr"><img class="logo" src="assets/sj.png" alt=""></div>
@@ -695,13 +695,13 @@ async function tabAccess(el){
   el.innerHTML = `<div class="section-title"><h2>Contraseña y pantalla</h2></div>
     <div style="display:grid;gap:18px;max-width:720px">
     <div class="panel-box" style="display:flex;flex-direction:column;gap:12px">
-      <h3 style="font:400 26px var(--display);color:var(--brown)">Pantalla en directo</h3>
+      <h3 style="font:800 20px var(--body);color:var(--brown)">Pantalla en directo</h3>
       <p style="margin:0">Abre este enlace en el ordenador del proyector o en la tele. Muestra las fotos y la clasificación sin pedir contraseña. No lo compartáis con los invitados.</p>
       <div class="row-inline"><input type="text" id="sl" readonly value="${esc(screenUrl)}" aria-label="Enlace de la pantalla" style="flex:1;min-width:240px;font-size:14px"><button class="ghost small" id="cp">Copiar</button><a class="btn small" href="${esc(screenUrl)}" target="_blank" rel="noopener">Abrir</a></div>
       <div class="row-inline"><button class="danger small" id="nk">Cambiar el enlace</button><span class="muted" style="font-size:13.5px">El enlace anterior dejará de funcionar.</span></div>
     </div>
     <form class="panel-box" id="pf" style="display:flex;flex-direction:column;gap:12px">
-      <h3 style="font:400 26px var(--display);color:var(--brown)">Cambiar la contraseña</h3>
+      <h3 style="font:800 20px var(--body);color:var(--brown)">Cambiar la contraseña</h3>
       <label class="label" for="np">Nueva contraseña</label><input type="password" id="np" autocomplete="new-password" minlength="6" required>
       <label class="label" for="np2">Repítela</label><input type="password" id="np2" autocomplete="new-password" minlength="6" required>
       <div class="row-inline"><button type="submit">Guardar contraseña</button><span class="status" id="pst"></span></div>
