@@ -3,551 +3,706 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="theme-color" content="#A8344F">
+<meta name="theme-color" content="#F3EEE4">
 </head>
 <body>
-<title>Misión Secreta Boda</title>
+<title>Misión Secreta Sara y Joshua</title>
+<link rel="icon" href="assets/favicon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gloock&family=Figtree:wght@400;500;600;700&family=Courier+Prime:wght@400;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Italiana&family=Gilda+Display&family=Nunito:wght@400;600;700;800&display=swap">
 <style>
 :root{
-  --bg:#F3F1F5; --surface:#FFFFFF; --paper:#FBFAFC; --ink:#261F2E; --muted:#766D80;
-  --line:#E1DCE6; --accent:#A8344F; --accent-soft:#F6E4E8; --accent-ink:#FFFFFF;
-  --sage:#4F7361; --sage-soft:#E3EDE7; --gold:#9A7428;
-  --display:"Gloock", Georgia, "Times New Roman", serif;
-  --body:"Figtree", system-ui, -apple-system, "Segoe UI", sans-serif;
-  --mono:"Courier Prime", "Courier New", ui-monospace, monospace;
-}
-@media (prefers-color-scheme: dark){
-  :root:not([data-theme="light"]){
-    color-scheme:dark;
-    --bg:#16121B; --surface:#211B28; --paper:#1C1722; --ink:#F1EDF4; --muted:#A99FB3;
-    --line:#342C3D; --accent:#E27690; --accent-soft:#3A2230; --accent-ink:#1A0F15;
-    --sage:#8DB7A1; --sage-soft:#1F2E27; --gold:#D8B46A;
-  }
-}
-:root[data-theme="dark"]{
-  color-scheme:dark;
-  --bg:#16121B; --surface:#211B28; --paper:#1C1722; --ink:#F1EDF4; --muted:#A99FB3;
-  --line:#342C3D; --accent:#E27690; --accent-soft:#3A2230; --accent-ink:#1A0F15;
-  --sage:#8DB7A1; --sage-soft:#1F2E27; --gold:#D8B46A;
+  color-scheme:light;
+  --paper:#F3EEE4; --card:rgba(255,253,249,.72); --card-solid:#FBF8F2;
+  --ink:#6F3E1E; --brown:#895129; --muted:#9B7960; --line:#E2D6C6;
+  --teal:#23C4B3; --teal-deep:#11897D; --teal-soft:#DDF3EF;
+  --salmon:#EC8F6E; --salmon-deep:#C4603D; --salmon-soft:#F8E1D6;
+  --display:"Italiana", "Didot", "Bodoni 72", Georgia, serif;
+  --serif:"Gilda Display", "Cormorant Garamond", Georgia, serif;
+  --body:"Nunito", system-ui, -apple-system, "Segoe UI", sans-serif;
 }
 *{box-sizing:border-box}
-html,body{background:var(--bg)}
-body{color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.5;margin:0;padding-inline:16px;padding-block:20px 48px}
-h1,h2,h3{font-family:var(--display);font-weight:400;text-wrap:balance;margin:0;line-height:1.1}
-.mono{font-family:var(--mono);letter-spacing:.08em;text-transform:uppercase;font-size:12px}
-.muted{color:var(--muted)}
-.wrap{max-width:560px;margin:0 auto;display:flex;flex-direction:column;gap:20px}
-.wide{max-width:1320px;margin:0 auto}
-a{color:var(--accent)}
-button,.btn{font:600 15px/1 var(--body);border:0;border-radius:999px;padding:12px 18px;cursor:pointer;background:var(--accent);color:var(--accent-ink);display:inline-flex;align-items:center;gap:8px;text-decoration:none;white-space:nowrap}
-.btn.ghost,button.ghost{background:transparent;color:var(--ink);box-shadow:inset 0 0 0 1.5px var(--line)}
-button:focus-visible,.btn:focus-within,input:focus-visible,a:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+html{background:var(--paper);overflow-x:clip}
+body{margin:0;min-height:100vh;color:var(--ink);font:16px/1.55 var(--body);background:var(--paper) url("assets/papel.jpg") repeat top center/1100px auto;padding-inline:16px;padding-block:0 56px;overflow-x:clip}
+h1,h2,h3{margin:0;font-weight:400;text-wrap:balance}
+a{color:var(--teal-deep)}
+button,.btn{font:700 15px/1 var(--body);border:0;border-radius:999px;padding:13px 20px;cursor:pointer;background:var(--brown);color:#FFF9F2;display:inline-flex;align-items:center;justify-content:center;gap:8px;text-decoration:none;white-space:nowrap;position:relative}
+button:hover,.btn:hover{background:var(--ink)}
+.ghost{background:transparent!important;color:var(--brown)!important;box-shadow:inset 0 0 0 1.5px var(--line)}
+.ghost:hover{box-shadow:inset 0 0 0 1.5px var(--brown)}
+.danger{background:transparent!important;color:var(--salmon-deep)!important;box-shadow:inset 0 0 0 1.5px var(--salmon-soft)}
+.danger.armed{background:var(--salmon-deep)!important;color:#fff!important;box-shadow:none}
+.small{padding:9px 14px;font-size:13.5px}
 button:disabled{opacity:.5;cursor:default}
-input[type=text],input[type=password],input[type=number]{font:500 18px var(--body);padding:14px 16px;border-radius:12px;border:1.5px solid var(--line);background:var(--surface);color:var(--ink);width:100%}
-.demo-bar{max-width:1320px;margin:0 auto 16px;display:flex;flex-wrap:wrap;gap:8px 16px;align-items:center;justify-content:space-between;font-size:13px;color:var(--muted);border-bottom:1px dashed var(--line);padding-bottom:12px}
+:focus-visible{outline:3px solid var(--teal);outline-offset:2px}
+input[type=text],input[type=email],input[type=number],select{font:600 17px var(--body);color:var(--ink);background:var(--card-solid);border:1.5px solid var(--line);border-radius:14px;padding:13px 16px;width:100%}
+input:focus{border-color:var(--teal);outline:none;box-shadow:0 0 0 3px var(--teal-soft)}
+.label{font:800 12px var(--body);letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+.muted{color:var(--muted)}
+.status{font-size:14.5px;min-height:22px}
+.status.err{color:var(--salmon-deep)}
+.status.ok{color:var(--teal-deep)}
+[hidden]{display:none!important}
+
+/* ---------- barra de vista previa ---------- */
+.demo-bar{max-width:1240px;margin:0 auto;padding-block:12px;display:flex;flex-wrap:wrap;gap:8px 14px;align-items:center;justify-content:space-between;font-size:13px;color:var(--muted);border-bottom:1px dashed var(--line)}
 .demo-bar nav{display:flex;gap:6px;flex-wrap:wrap}
-.demo-bar nav a{font:600 13px var(--body);color:var(--ink);text-decoration:none;padding:6px 12px;border-radius:999px;box-shadow:inset 0 0 0 1px var(--line)}
-.demo-bar nav a[aria-current="page"]{background:var(--ink);color:var(--bg);box-shadow:none}
+.demo-bar a{font:700 13px var(--body);color:var(--brown);text-decoration:none;padding:6px 12px;border-radius:999px;box-shadow:inset 0 0 0 1px var(--line)}
+.demo-bar a[aria-current]{background:var(--brown);color:#FFF9F2;box-shadow:none}
 
-/* ---------- home ---------- */
-.home-hero{display:flex;flex-direction:column;gap:12px;padding-block:24px 8px}
-.home-hero h1{font-size:clamp(40px,9vw,64px)}
-.seal{width:64px;height:64px;border-radius:50%;background:var(--accent);color:var(--accent-ink);display:grid;place-items:center;font:400 26px var(--display);box-shadow:0 0 0 6px var(--accent-soft)}
-.routes{display:grid;gap:12px}
-.route{display:grid;grid-template-columns:1fr auto;gap:4px 16px;align-items:center;padding:18px;border-radius:16px;background:var(--surface);border:1px solid var(--line);text-decoration:none;color:var(--ink)}
-.route strong{font:400 22px var(--display)}
-.route span{grid-column:1;color:var(--muted);font-size:14px}
-.route i{grid-row:1/span 2;grid-column:2;font-style:normal;font-size:22px;color:var(--accent)}
+/* ---------- invitado ---------- */
+.guest{position:relative;max-width:520px;margin:0 auto;padding-top:36px;display:flex;flex-direction:column;gap:22px}
+.branch{position:absolute;pointer-events:none;user-select:none;z-index:0}
+.guest .branch{width:300px;top:-6px;right:-150px;transform:rotate(-58deg);opacity:.95}
+@media (min-width:760px){.guest .branch{width:560px;top:120px;right:auto;left:-470px;transform:rotate(-84deg)}}
+.guest>*:not(.branch){position:relative;z-index:1}
+.hero{display:flex;flex-direction:column;gap:6px;padding-right:70px}
+.kicker{font:800 16px var(--body);color:var(--brown);display:flex;align-items:center;gap:8px;margin:0}
+.kicker svg{width:17px;height:17px;fill:var(--teal)}
+.names{font:400 clamp(56px,16vw,76px)/.95 var(--display);color:var(--teal);letter-spacing:.01em;margin-top:6px}
+.names span{display:block}
+.date{font:400 clamp(22px,6vw,27px)/1.2 var(--serif);color:var(--salmon);margin:14px 0 0}
+.place{font:400 20px var(--serif);color:var(--brown);margin:0}
+.intro{font-size:17.5px;margin:0;max-width:40ch}
+.sheet{background:var(--card);backdrop-filter:blur(2px);border:1px solid var(--line);border-radius:22px;padding:22px 20px;display:flex;flex-direction:column;gap:14px}
+.form{display:flex;flex-direction:column;gap:12px}
+.resume{display:grid;grid-template-columns:auto 1fr auto;gap:2px 14px;align-items:center;text-decoration:none;color:var(--ink);background:var(--teal-soft);border-radius:18px;padding:14px 18px}
+.resume img{grid-row:1/span 2;width:40px;height:40px}
+.resume strong{font:400 22px var(--serif)}
+.resume small{grid-column:2;color:var(--teal-deep);font-weight:700}
+.resume i{grid-row:1/span 2;grid-column:3;font-style:normal;font-size:22px;color:var(--teal-deep)}
+.progress{display:flex;flex-direction:column;gap:6px}
+.track{height:8px;background:var(--line);border-radius:99px;overflow:hidden}
+.track div{height:100%;background:var(--teal);border-radius:99px;transition:width .6s}
+.retos{list-style:none;margin:0;padding:0;display:flex;flex-direction:column}
+.reto{display:grid;grid-template-columns:34px 1fr auto;gap:12px;align-items:center;padding:15px 0;border-top:1px solid var(--line)}
+.reto .n{font:400 24px var(--serif);color:var(--salmon)}
+.reto .t{font-weight:700;line-height:1.3}
+.reto.done .n{color:var(--teal)}
+.reto.done .t{color:var(--muted);font-weight:600}
+.reto .side{display:flex;align-items:center;gap:8px}
+.reto .side img{width:54px;height:54px;object-fit:cover;border-radius:12px;border:2px solid var(--teal)}
+label.btn input,label.again input{position:absolute;inset:0;opacity:0;width:1px;height:1px}
+label.again{font:700 12.5px var(--body);color:var(--muted);text-decoration:underline;cursor:pointer;position:relative}
+.win{background:var(--teal-soft);border-radius:16px;padding:14px 16px;font-weight:700;color:var(--teal-deep)}
+.keep{font-size:14px;color:var(--muted);display:flex;flex-direction:column;gap:8px}
+.keep .row{display:flex;gap:8px}
+.keep input{font:600 13px var(--body);padding:9px 12px}
 
-/* ---------- guest dossier ---------- */
-.dossier{background:var(--paper);border:1px solid var(--line);border-radius:6px 22px 6px 6px;padding:22px 18px;display:flex;flex-direction:column;gap:16px;position:relative;overflow:hidden}
-.dossier::before{content:"";position:absolute;inset:0 0 auto 0;height:6px;background:repeating-linear-gradient(90deg,var(--accent) 0 18px,transparent 18px 26px)}
-.d-head{display:flex;justify-content:space-between;align-items:center;gap:12px}
-.stamp{font:700 11px var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--accent);border:2px solid var(--accent);padding:4px 8px;border-radius:4px;transform:rotate(-4deg)}
-.dossier h1{font-size:clamp(32px,8vw,44px)}
-.bar{height:8px;background:var(--line);border-radius:99px;overflow:hidden}
-.bar>div{height:100%;background:var(--sage);border-radius:99px;transition:width .5s}
-.missions{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;border-top:1px solid var(--line)}
-.m{display:grid;grid-template-columns:34px 1fr auto;gap:12px;align-items:center;padding:14px 0;border-bottom:1px solid var(--line)}
-.m-n{font:700 13px var(--mono);color:var(--muted)}
-.m-t{font-weight:600;line-height:1.3}
-.m.done .m-n{color:var(--sage)}
-.m.done .m-t{color:var(--muted)}
-.m-side{display:flex;align-items:center;gap:8px}
-.m-side img{width:52px;height:52px;object-fit:cover;border-radius:10px;border:2px solid var(--sage)}
-.btn input{position:absolute;width:1px;height:1px;opacity:0;pointer-events:none}
-.btn.small{padding:10px 14px;font-size:14px}
-.again{font:600 12px var(--body);color:var(--muted);background:none;padding:6px 4px;border-radius:6px}
-.again input{position:absolute;width:1px;height:1px;opacity:0}
-label.again{cursor:pointer;text-decoration:underline;position:relative}
-.status{font-size:14px;min-height:21px}
-.status.err{color:var(--accent)}
-.win{background:var(--sage-soft);color:var(--ink);border-radius:14px;padding:14px 16px;font-weight:600}
-.join{display:flex;flex-direction:column;gap:12px}
+/* ---------- panel de los novios ---------- */
+.admin{max-width:1240px;margin:0 auto;padding-top:22px;position:relative}
+.a-top{display:flex;flex-wrap:wrap;gap:14px 24px;align-items:center;justify-content:space-between;padding-bottom:16px}
+.a-brand{display:flex;align-items:center;gap:14px}
+.a-brand img{width:46px;height:46px}
+.a-brand h1{font:400 32px/1 var(--display);color:var(--teal)}
+.a-brand p{margin:2px 0 0;font-size:13px;color:var(--muted)}
+.a-user{display:flex;align-items:center;gap:10px;font-size:13.5px;color:var(--muted);flex-wrap:wrap}
+.tabs{display:flex;gap:4px;overflow-x:auto;border-bottom:1px solid var(--line);margin-bottom:24px;scrollbar-width:none}
+.tabs a{font:800 14px var(--body);color:var(--muted);text-decoration:none;padding:12px 14px;border-bottom:3px solid transparent;white-space:nowrap}
+.tabs a[aria-current]{color:var(--brown);border-color:var(--teal)}
+.panel-box{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:20px}
+.section-title{display:flex;flex-wrap:wrap;gap:12px;align-items:flex-end;justify-content:space-between;margin-bottom:18px}
+.section-title h2{font:400 34px/1.05 var(--display);color:var(--brown)}
+.tools{display:flex;gap:8px;flex-wrap:wrap}
+.login{max-width:440px;margin:40px auto;display:flex;flex-direction:column;gap:14px;position:relative}
+.login>*:not(.branch){position:relative;z-index:1}
+.login h1{font:400 44px/1 var(--display);color:var(--teal)}
+.login .branch{width:320px;top:-80px;right:-150px;transform:rotate(-30deg);opacity:.9}
 
-/* ---------- panel ---------- */
-.p-head{display:flex;flex-wrap:wrap;gap:16px 32px;align-items:flex-end;justify-content:space-between;padding-bottom:18px;border-bottom:1px solid var(--line);margin-bottom:22px}
-.p-title h1{font-size:clamp(34px,5vw,60px)}
-.live{display:inline-flex;align-items:center;gap:8px;color:var(--accent)}
-.live::before{content:"";width:9px;height:9px;border-radius:50%;background:var(--accent);animation:pulse 1.6s infinite}
-@keyframes pulse{0%,100%{opacity:1}50%{opacity:.25}}
-.stats{display:flex;gap:28px;flex-wrap:wrap}
-.stat b{display:block;font:400 clamp(30px,4vw,46px)/1 var(--display);font-variant-numeric:tabular-nums}
-.stat span{font-size:13px;color:var(--muted)}
-.p-grid{display:grid;grid-template-columns:minmax(0,1.55fr) minmax(0,1fr);gap:24px;align-items:start}
-@media (max-width:860px){.p-grid{grid-template-columns:1fr}}
-.spot{position:relative;border-radius:18px;overflow:hidden;background:var(--surface);border:1px solid var(--line);aspect-ratio:4/3;max-width:100%}
+/* directo */
+.live-head{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:18px 34px;margin-bottom:20px}
+.live-dot{display:inline-flex;align-items:center;gap:8px;font:800 12px var(--body);letter-spacing:.16em;text-transform:uppercase;color:var(--salmon-deep)}
+.live-dot::before{content:"";width:9px;height:9px;border-radius:50%;background:var(--salmon);animation:pulse 1.6s infinite}
+@keyframes pulse{50%{opacity:.25}}
+.live-names{font:400 clamp(40px,5vw,64px)/1 var(--display);color:var(--teal);margin-top:4px}
+.stats{display:flex;gap:30px;flex-wrap:wrap}
+.stat b{display:block;font:400 clamp(34px,4vw,50px)/1 var(--serif);color:var(--brown);font-variant-numeric:tabular-nums}
+.stat span{font-size:13px;color:var(--muted);font-weight:700}
+.live-grid{display:grid;grid-template-columns:minmax(0,1.6fr) minmax(0,1fr);gap:22px;align-items:start}
+@media (max-width:880px){.live-grid{grid-template-columns:1fr}}
+.spot{position:relative;border-radius:22px;overflow:hidden;background:var(--card-solid);border:1px solid var(--line);aspect-ratio:4/3;max-width:100%}
 .spot img{width:100%;height:100%;object-fit:cover;display:block}
-.spot .cap{position:absolute;inset:auto 0 0 0;padding:44px 20px 18px;background:linear-gradient(transparent,rgba(12,8,16,.82));color:#fff;display:flex;flex-direction:column;gap:4px}
-.spot .cap strong{font:400 clamp(22px,2.6vw,34px)/1.15 var(--display)}
-.spot .cap span{font-size:14px;opacity:.85}
-.spot.flash{animation:flash .9s ease-out}
-@keyframes flash{from{box-shadow:0 0 0 8px var(--accent)}to{box-shadow:0 0 0 0 transparent}}
-.spot .empty{position:absolute;inset:0;display:grid;place-items:center;color:var(--muted);padding:24px;text-align:center}
-.feed{display:grid;grid-template-columns:repeat(auto-fill,minmax(110px,1fr));gap:10px;margin-top:14px}
-.feed figure{margin:0;position:relative;aspect-ratio:1;border-radius:12px;overflow:hidden;background:var(--surface)}
+.spot .cap{position:absolute;inset:auto 0 0 0;padding:60px 22px 18px;background:linear-gradient(transparent,rgba(58,30,12,.78));color:#fff;display:flex;flex-direction:column;gap:2px}
+.spot .cap strong{font:400 clamp(24px,2.6vw,36px)/1.15 var(--serif)}
+.spot .cap span{font-size:14.5px;opacity:.9;font-weight:600}
+.spot .empty{position:absolute;inset:0;display:grid;place-items:center;text-align:center;color:var(--muted);padding:30px}
+.spot.flash{animation:flash 1s ease-out}
+@keyframes flash{from{box-shadow:0 0 0 8px var(--teal)}to{box-shadow:0 0 0 0 transparent}}
+.feed{display:grid;grid-template-columns:repeat(auto-fill,minmax(110px,1fr));gap:10px;margin-top:12px}
+.feed figure{margin:0;position:relative;aspect-ratio:1;border-radius:14px;overflow:hidden;background:var(--card-solid)}
 .feed img{width:100%;height:100%;object-fit:cover;display:block}
-.feed figcaption{position:absolute;inset:auto 0 0 0;font:600 11px/1.2 var(--body);color:#fff;padding:16px 8px 6px;background:linear-gradient(transparent,rgba(12,8,16,.8))}
-.board{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:20px;display:flex;flex-direction:column;gap:16px}
-.board h2{font-size:28px}
-.rank{list-style:none;margin:0;padding:0;display:flex;flex-direction:column}
-.rank li{display:grid;grid-template-columns:32px 1fr auto;gap:10px;align-items:center;padding:11px 0;border-bottom:1px solid var(--line);transition:background .4s}
+.feed figcaption{position:absolute;inset:auto 0 0 0;font:700 11.5px/1.2 var(--body);color:#fff;padding:18px 8px 7px;background:linear-gradient(transparent,rgba(58,30,12,.75))}
+.board h3{font:400 30px var(--display);color:var(--brown);margin-bottom:6px}
+.rank{list-style:none;margin:0;padding:0}
+.rank li{display:grid;grid-template-columns:30px 1fr auto;gap:10px;align-items:center;padding:11px 0;border-bottom:1px solid var(--line);transition:background .5s}
 .rank li:last-child{border-bottom:0}
-.rank .pos{font:700 15px var(--mono);color:var(--muted);font-variant-numeric:tabular-nums}
-.rank li:nth-child(1) .pos{color:var(--gold)}
-.rank .who{font-weight:600;min-width:0;overflow-wrap:anywhere}
-.rank .who small{display:block;font:400 12px var(--mono);color:var(--muted);letter-spacing:.06em}
+.rank .pos{font:400 20px var(--serif);color:var(--muted);font-variant-numeric:tabular-nums}
+.rank li:first-child .pos{color:var(--salmon)}
+.rank .who{font-weight:800;min-width:0;overflow-wrap:anywhere}
+.rank .who small{display:block;font-weight:600;font-size:12px;color:var(--muted)}
+.rank li.bump{background:var(--teal-soft)}
 .dots{display:flex;gap:4px;align-items:center}
 .dots i{width:10px;height:10px;border-radius:50%;background:var(--line)}
-.dots i.on{background:var(--sage)}
-.pts{font:400 22px var(--display);min-width:22px;text-align:right;font-variant-numeric:tabular-nums}
-.rank li.bump{background:var(--sage-soft)}
+.dots i.on{background:var(--teal)}
+.dots b{font:400 22px var(--serif);min-width:24px;text-align:right;color:var(--brown)}
 .chips{display:flex;flex-wrap:wrap;gap:6px}
-.chips span{font-size:13px;padding:5px 10px;border-radius:999px;background:var(--accent-soft);color:var(--ink)}
-.tools{display:flex;gap:8px;flex-wrap:wrap}
+.chips span{font-size:13px;font-weight:600;padding:5px 11px;border-radius:999px;background:var(--salmon-soft);color:var(--ink)}
 
-/* ---------- cards / admin ---------- */
-.adm-head{display:flex;flex-wrap:wrap;gap:12px;justify-content:space-between;align-items:flex-end;margin-bottom:20px}
-.adm-head h1{font-size:clamp(32px,5vw,48px)}
-.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:16px}
-.card{background:var(--paper);border:1px solid var(--line);border-radius:4px;padding:18px;display:grid;grid-template-columns:1fr 96px;gap:10px 14px;break-inside:avoid;position:relative}
-.card::before{content:"";position:absolute;inset:0 0 auto 0;height:5px;background:repeating-linear-gradient(90deg,var(--accent) 0 14px,transparent 14px 20px)}
-.card .c-top{grid-column:1/-1;display:flex;justify-content:space-between;align-items:baseline;gap:8px;padding-top:4px}
-.card h3{font-size:24px;grid-column:1/-1}
-.card ol{margin:0;padding-left:20px;font-size:14px;line-height:1.45;display:flex;flex-direction:column;gap:3px}
-.qr{width:96px;height:96px;background:#fff;padding:5px;border-radius:4px;align-self:end}
-.qr img,.qr canvas{width:86px!important;height:86px!important;display:block}
-.card .foot{grid-column:1/-1;font-size:12px;color:var(--muted)}
-.poster{max-width:560px;margin:0 auto;background:var(--paper);border:1px solid var(--line);border-radius:6px;padding:36px 28px;display:flex;flex-direction:column;align-items:center;gap:14px;text-align:center;position:relative;overflow:hidden}
-.poster::before{content:"";position:absolute;inset:0 0 auto 0;height:8px;background:repeating-linear-gradient(90deg,var(--accent) 0 18px,transparent 18px 26px)}
-.poster .mono{color:var(--accent);font-size:14px;letter-spacing:.2em}
-.poster h2{font-size:clamp(40px,9vw,60px)}
-.poster-lead{font-size:18px;max-width:34ch;margin:0}
-.qr.big{width:260px;height:260px;padding:12px;max-width:100%}
-.qr.big img,.qr.big canvas{width:236px!important;height:236px!important}
-.poster-url{font:700 14px var(--mono);margin:0;overflow-wrap:anywhere}
-.poster-foot{font-size:13px;color:var(--muted);margin:0}
-.pin{max-width:360px;margin:40px auto;display:flex;flex-direction:column;gap:12px}
+/* invitados */
+.rows{display:flex;flex-direction:column}
+.prow{display:grid;grid-template-columns:52px minmax(160px,1.4fr) 130px 90px 120px auto;gap:12px;align-items:center;padding:12px 4px;border-bottom:1px solid var(--line)}
+.prow.head{font:800 11.5px var(--body);letter-spacing:.12em;text-transform:uppercase;color:var(--muted);padding-block:6px 10px}
+.prow .num{font:400 20px var(--serif);color:var(--salmon);font-variant-numeric:tabular-nums}
+.prow .name-edit{display:flex;gap:6px}
+.prow .name-edit input{padding:9px 12px;font-size:15px;border-radius:10px}
+.prow .acts{display:flex;gap:6px;justify-content:flex-end;flex-wrap:wrap}
+@media (max-width:860px){
+  .prow{grid-template-columns:44px 1fr;row-gap:6px}
+  .prow.head{display:none}
+  .prow>:nth-child(n+3){grid-column:2}
+  .prow .acts{justify-content:flex-start}
+}
+/* fotos */
+.pgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:14px}
+.pcard{background:var(--card-solid);border:1px solid var(--line);border-radius:16px;overflow:hidden;display:flex;flex-direction:column}
+.pcard img{width:100%;aspect-ratio:1;object-fit:cover;display:block}
+.pcard .meta{padding:10px 12px;display:flex;flex-direction:column;gap:2px;font-size:13.5px;flex:1}
+.pcard .meta strong{font-size:14.5px}
+.pcard .acts{display:flex;gap:6px;padding:0 12px 12px}
+/* retos */
+.rlist{display:flex;flex-direction:column;gap:8px}
+.rrow{display:grid;grid-template-columns:36px 1fr auto auto;gap:10px;align-items:center}
+.rrow .n{font:400 20px var(--serif);color:var(--salmon);text-align:right;font-variant-numeric:tabular-nums}
+.rrow input{padding:10px 13px;font-size:15.5px;border-radius:11px}
+.rrow .use{font-size:12.5px;color:var(--muted);font-weight:700;white-space:nowrap}
+@media (max-width:620px){.rrow{grid-template-columns:30px 1fr auto}.rrow .use{grid-column:2}}
+.row-inline{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.row-inline input[type=number]{width:90px}
+/* cartel */
+.poster{position:relative;overflow:hidden;max-width:520px;margin:0 auto;background:var(--paper) url("assets/papel.jpg") center/cover;border:1px solid var(--line);border-radius:6px;padding:40px 30px 34px;display:flex;flex-direction:column;align-items:center;text-align:center;gap:10px}
+.poster .branch{width:360px;top:130px;left:-150px;transform:rotate(-80deg)}
+.poster>*:not(.branch){position:relative;z-index:1}
+.poster .names{font-size:62px;margin:4px 0 0}
+.poster .date{margin-top:4px;font-size:22px}
+.poster p.lead{font-size:17px;margin:8px 0 6px;max-width:30ch}
+.qrbox{background:#FFFDF8;padding:12px;border-radius:14px;width:236px;height:236px;max-width:100%;display:grid;place-items:center;position:relative}
+.qrbox img:not(.logo),.qrbox canvas{width:212px!important;height:212px!important}
+.qrbox .logo{position:absolute;width:46px;height:46px;background:#FFFDF8;border-radius:10px;padding:5px;left:50%;top:50%;transform:translate(-50%,-50%);z-index:2}
+.poster .url{font:800 14px var(--body);color:var(--brown);overflow-wrap:anywhere;margin:0}
+/* acceso */
+.alist{list-style:none;margin:0 0 16px;padding:0}
+.alist li{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:11px 0;border-bottom:1px solid var(--line);font-weight:700;overflow-wrap:anywhere}
+
 @media print{
   body{background:#fff;padding:0}
-  .demo-bar,.adm-head,.no-print{display:none!important}
-  .cards{grid-template-columns:1fr 1fr;gap:6mm}
-  .card,.poster{background:#fff;color:#000;border:1px solid #bbb}
-  .poster{margin-top:20mm}
+  .demo-bar,.a-top,.tabs,.section-title,.no-print{display:none!important}
+  .poster{border:0;margin-top:10mm}
 }
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 </style>
 
-<div id="app"><p class="muted" style="text-align:center;padding:40px 0">Cargando…</p></div>
+<div id="app"><p class="muted" style="text-align:center;padding:60px 0">Cargando…</p></div>
 
 <script>
-/* =====================================================================
-   CONFIGURACIÓN — edita esto antes de publicar
-   ===================================================================== */
+/* =========================================================
+   CONFIGURACIÓN
+   ========================================================= */
 const CONFIG = {
-  novios: "Sara & Joshua",
-  fecha: "",                       // p. ej. "12 de junio de 2027"
+  novio1: "Sara",
+  novio2: "Joshua",
+  fecha: "21 de noviembre de 2026",
+  lugar: "Finca Gurugú",
   supabaseUrl: "https://kgrtklnkhlqotkpkdmfr.supabase.co",
   supabaseKey: "sb_publishable_93S0dmDPVoOcOHhXzUs-9Q_eXBLpgGb",   // clave pública, segura en el navegador
-  pinAdmin: "1234",                // solo para vosotros: imprimir el cartel y descargar las fotos
-  retosPorTarjeta: 5,
-  urlBase: "https://joshdejuan.github.io/mision-secreta-boda/",
-  retos: [
-    "El primer paso hacia el altar",
-    "El «sí, quiero» visto desde tu sitio",
-    "Alguien secándose una lágrima",
-    "El primer beso de casados",
-    "La lluvia de arroz o pétalos",
-    "Los anillos en primer plano",
-    "Un selfie con los novios",
-    "Tres generaciones brindando juntas",
-    "Alguien bailando descalzo",
-    "El corte de la tarta",
-    "Un camarero en plena acción",
-    "La mesa más ruidosa del banquete",
-    "Un abrazo de más de cinco segundos",
-    "Algo azul",
-    "Los zapatos de uno de los novios",
-    "Un niño adueñándose de la pista",
-    "Una corbata donde no debería estar",
-    "Foto de grupo con diez personas o más",
-    "Alguien emocionado durante un discurso",
-    "Tu mejor cara de espía",
-    "Un brindis con alguien que acabas de conocer",
-    "El detalle de decoración que más te guste",
-    "Los novios riéndose a carcajadas",
-    "Alguien que se sabe toda la canción"
-  ]
+  urlBase: "https://joshdejuan.github.io/mision-secreta-boda/"
 };
-/* ===================================================================== */
+/* ========================================================= */
 
-const LIVE = !!(CONFIG.supabaseUrl && CONFIG.supabaseKey);
+const DEMO = !/github\.io$|sarajoshua\.love$/.test(location.hostname);
 const $ = (s, r = document) => r.querySelector(s);
 const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 const pad = n => String(n).padStart(2, "0");
 const uid = () => Math.random().toString(36).slice(2) + Date.now().toString(36);
 const app = $("#app");
-
-function missionsFor(card){
-  const M = CONFIG.retos.length, n = Math.min(CONFIG.retosPorTarjeta, M);
-  const start = ((card - 1) * n) % M, out = [];
-  for (let j = 0; j < n; j++) out.push((start + j) % M);
-  return out;
-}
+const PAIR = `${CONFIG.novio1} + ${CONFIG.novio2}`;
+const HEART = `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-7.5-4.6-9.6-9.4C.9 8 3 4.5 6.6 4.5c2.1 0 3.6 1.1 4.4 2.5.8-1.4 2.3-2.5 4.4-2.5 3.6 0 5.7 3.5 4.2 7.1C19.5 16.4 12 21 12 21z"/></svg>`;
+const BRANCH = () => `<img class="branch" src="assets/eucalipto.webp" alt="">`;
+const LOGO = `<img src="assets/sj.png" alt="Sara y Joshua">`;
+function base(){ return DEMO ? CONFIG.urlBase : location.origin + location.pathname; }
 function ago(ts){
   const s = Math.max(0, (Date.now() - new Date(ts).getTime()) / 1000);
   if (s < 45) return "ahora mismo";
   if (s < 3600) return "hace " + Math.round(s / 60) + " min";
-  return "hace " + Math.round(s / 3600) + " h";
-}
-function baseUrl(){
-  if (CONFIG.urlBase) return CONFIG.urlBase.replace(/#.*$/, "");
-  return location.origin + location.pathname;
+  if (s < 86400) return "hace " + Math.round(s / 3600) + " h";
+  return new Date(ts).toLocaleDateString("es-ES", { day: "numeric", month: "short" });
 }
 function loadScript(src){
   return new Promise((res, rej) => { const s = document.createElement("script"); s.src = src; s.onload = res; s.onerror = () => rej(new Error("No se pudo cargar " + src)); document.head.appendChild(s); });
 }
+const KEY = "mision-sj";
+let memMe = null;
+function me(){ try { return JSON.parse(localStorage.getItem(KEY) || "null") || memMe; } catch { return memMe; } }
+function remember(v){ memMe = v; try { v ? localStorage.setItem(KEY, JSON.stringify(v)) : localStorage.removeItem(KEY); } catch {} }
 
-/* ---------- compresión de fotos ---------- */
 async function compress(file, max = 1600){
   let src;
   try { src = await createImageBitmap(file); }
-  catch { src = await new Promise((res, rej) => { const i = new Image(); i.onload = () => res(i); i.onerror = () => rej(new Error("Ese archivo no parece una foto.")); i.src = URL.createObjectURL(file); }); }
-  const w = src.width, h = src.height, k = Math.min(1, max / Math.max(w, h));
-  const c = document.createElement("canvas"); c.width = Math.round(w * k); c.height = Math.round(h * k);
+  catch { src = await new Promise((res, rej) => { const i = new Image(); i.onload = () => res(i); i.onerror = () => rej(new Error("no es una foto")); i.src = URL.createObjectURL(file); }); }
+  const k = Math.min(1, max / Math.max(src.width, src.height));
+  const c = document.createElement("canvas"); c.width = Math.round(src.width * k); c.height = Math.round(src.height * k);
   c.getContext("2d").drawImage(src, 0, 0, c.width, c.height);
   return await new Promise(r => c.toBlob(r, "image/jpeg", 0.82));
 }
+function armed(btn, fn){
+  btn.addEventListener("click", async () => {
+    if (!btn.classList.contains("armed")) {
+      btn.classList.add("armed"); btn.dataset.label = btn.textContent; btn.textContent = "Confirmar";
+      setTimeout(() => { if (btn.isConnected && btn.classList.contains("armed") && !btn.disabled) { btn.classList.remove("armed"); btn.textContent = btn.dataset.label; } }, 4000);
+      return;
+    }
+    btn.disabled = true; btn.textContent = "Borrando…";
+    try { await fn(); } catch (e) { console.error(e); btn.disabled = false; btn.classList.remove("armed"); btn.textContent = "No se pudo borrar"; }
+  });
+}
 
-/* ---------- almacén: Supabase ---------- */
+/* =========================================================
+   DATOS · Supabase
+   ========================================================= */
 async function liveStore(){
   await loadScript("https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.117.2/dist/umd/supabase.js");
-  const sb = window.supabase.createClient(CONFIG.supabaseUrl, CONFIG.supabaseKey);
-  const withUrl = r => ({ ...r, url: sb.storage.from("fotos").getPublicUrl(r.path).data.publicUrl });
-  const store = {
-    async players(){ const { data, error } = await sb.from("players").select("*").order("created_at"); if (error) throw error; return data; },
-    async photos(){ const { data, error } = await sb.from("photos").select("*").order("created_at"); if (error) throw error; return data.map(withUrl); },
-    async player(card){ const { data, error } = await sb.from("players").select("*").eq("card", card).maybeSingle(); if (error) throw error; return data; },
-    async join(card, name){
-      const { data, error } = await sb.from("players").insert({ card, name }).select().single();
-      if (error) { if (error.code === "23505") return store.player(card); throw error; }
-      return data;
+  const sb = window.supabase.createClient(CONFIG.supabaseUrl, CONFIG.supabaseKey, { auth: { flowType: "pkce", detectSessionInUrl: true, persistSession: true } });
+  const pub = p => sb.storage.from("fotos").getPublicUrl(p).data.publicUrl;
+  const E = r => { if (r.error) throw r.error; return r.data; };
+  const subs = []; let chan = null;
+  return {
+    async register(name){ return E(await sb.rpc("register", { p_name: name })); },
+    async mine(token){
+      const d = E(await sb.rpc("my_mission", { p_token: token }));
+      if (!d) return null;
+      d.token = token; d.photos = (d.photos || []).map(p => ({ ...p, url: pub(p.path) }));
+      return d;
     },
-    async register(name){
-      for (let i = 0; i < 8; i++) {
-        const { data: top, error: e1 } = await sb.from("players").select("card").order("card", { ascending: false }).limit(1);
-        if (e1) throw e1;
-        const card = (top[0]?.card || 0) + 1 + Math.floor(Math.random() * i);
-        const { data, error } = await sb.from("players").insert({ card, name }).select().single();
-        if (!error) return data;
-        if (error.code !== "23505") throw error;
-      }
-      throw new Error("No se pudo registrar");
+    async addPhoto(m, mission, blob){
+      const path = `${m.id}/${Date.now()}-${uid().slice(0, 6)}.jpg`;
+      E(await sb.storage.from("fotos").upload(path, blob, { contentType: "image/jpeg" }));
+      E(await sb.rpc("add_photo", { p_token: m.token, p_mission: mission, p_path: path }));
     },
-    async upload(player, mission, blob){
-      const path = `tarjeta-${player.card}/${Date.now()}-${uid().slice(0, 6)}.jpg`;
-      const up = await sb.storage.from("fotos").upload(path, blob, { contentType: "image/jpeg" });
-      if (up.error) throw up.error;
-      const { data, error } = await sb.from("photos").insert({ player_id: player.id, card: player.card, mission, mission_text: CONFIG.retos[mission], path }).select().single();
-      if (error) throw error;
-      return withUrl(data);
+    async session(){
+      const { data } = await sb.auth.getSession();
+      const s = data.session; if (!s) return null;
+      const r = await sb.from("admins").select("email");
+      return { email: s.user.email, isAdmin: !r.error && r.data.length > 0 };
     },
+    async login(email){ E(await sb.auth.signInWithOtp({ email, options: { emailRedirectTo: base() + "?acceso=1", shouldCreateUser: true } })); },
+    async logout(){ await sb.auth.signOut(); },
+    async players(){ return E(await sb.from("players").select("id,card,name,missions,created_at").order("card")); },
+    async photos(){ return E(await sb.from("photos").select("*").order("created_at")).map(p => ({ ...p, url: pub(p.path) })); },
+    async config(){ return E(await sb.from("config").select("*").eq("id", 1).single()); },
+    async saveConfig(retos, n){ E(await sb.from("config").update({ retos, retos_por_persona: n, updated_at: new Date().toISOString() }).eq("id", 1)); },
+    async renamePlayer(id, name){ E(await sb.from("players").update({ name }).eq("id", id)); },
+    async deletePhoto(ph){ await sb.storage.from("fotos").remove([ph.path]); E(await sb.from("photos").delete().eq("id", ph.id)); },
+    async deletePlayer(id){
+      const ph = E(await sb.from("photos").select("path").eq("player_id", id));
+      if (ph.length) await sb.storage.from("fotos").remove(ph.map(p => p.path));
+      E(await sb.from("players").delete().eq("id", id));
+    },
+    async admins(){ return E(await sb.from("admins").select("email").order("email")).map(a => a.email); },
+    async addAdmin(email){ E(await sb.from("admins").insert({ email: email.toLowerCase().trim() })); },
+    async removeAdmin(email){ E(await sb.from("admins").delete().eq("email", email)); },
     on(fn){
       subs.push(fn);
-      if (subs.length > 1) return;
-      sb.channel("boda")
-        .on("postgres_changes", { event: "INSERT", schema: "public", table: "photos" }, p => subs.forEach(f => f("photo", withUrl(p.new))))
-        .on("postgres_changes", { event: "INSERT", schema: "public", table: "players" }, p => subs.forEach(f => f("player", p.new)))
+      if (!chan) chan = sb.channel("novios")
+        .on("postgres_changes", { event: "*", schema: "public", table: "photos" }, p => subs.forEach(f => f("photos", p)))
+        .on("postgres_changes", { event: "*", schema: "public", table: "players" }, p => subs.forEach(f => f("players", p)))
         .subscribe();
+      return () => { const i = subs.indexOf(fn); if (i >= 0) subs.splice(i, 1); };
     }
   };
-  const subs = [];
-  return store;
 }
 
-/* ---------- almacén: demo en memoria ---------- */
-function fakePhoto(seed){
-  const c = document.createElement("canvas"); c.width = 480; c.height = 480;
-  const g = c.getContext("2d"), h = (seed * 47) % 360;
-  const gr = g.createLinearGradient(0, 0, 480, 480);
-  gr.addColorStop(0, `hsl(${h} 42% 62%)`); gr.addColorStop(1, `hsl(${(h + 60) % 360} 38% 32%)`);
-  g.fillStyle = gr; g.fillRect(0, 0, 480, 480);
-  for (let i = 0; i < 14; i++) {
-    const r = ((seed * 13 + i * 29) % 60) + 12;
-    g.fillStyle = `hsla(${(h + i * 20) % 360} 70% 90% / ${0.08 + (i % 4) * 0.06})`;
-    g.beginPath(); g.arc((seed * 71 + i * 97) % 480, (seed * 31 + i * 53) % 480, r, 0, 7); g.fill();
-  }
-  g.fillStyle = "rgba(255,255,255,.9)"; g.font = "600 22px Figtree, sans-serif"; g.fillText("foto de ejemplo", 24, 452);
-  return c.toDataURL("image/jpeg", 0.8);
-}
+/* =========================================================
+   DATOS · vista previa en memoria
+   ========================================================= */
 function demoStore(){
-  const subs = [], players = [], photos = [];
-  const names = ["Lucía", "Marcos", "Tía Carmen", "Pablo", "Irene", "Abuelo Paco", "Sara", "Diego", "Nerea"];
-  const cards = [1, 2, 3, 4, 5, 6, 7, 8, 9];
-  const t0 = Date.now() - 50 * 60000;
-  names.forEach((n, i) => players.push({ id: "p" + i, card: cards[i], name: n, created_at: new Date(t0 + i * 60000).toISOString() }));
-  const plan = [5, 4, 4, 3, 2, 2, 1, 1, 0];
-  let seed = 1;
-  players.forEach((p, i) => missionsFor(p.card).slice(0, plan[i]).forEach((m, j) => {
-    photos.push({ id: uid(), player_id: p.id, card: p.card, mission: m, mission_text: CONFIG.retos[m], url: fakePhoto(seed++), created_at: new Date(t0 + (seed * 97000) % (48 * 60000)).toISOString() });
-  }));
+  const cfg = { retos: [
+    "El primer paso hacia el altar","El «sí, quiero» visto desde tu sitio","Alguien secándose una lágrima","El primer beso de casados",
+    "La lluvia de arroz o pétalos","Los anillos en primer plano","Un selfie con los novios","Tres generaciones brindando juntas",
+    "Alguien bailando descalzo","El corte de la tarta","Un camarero en plena acción","La mesa más ruidosa del banquete",
+    "Un abrazo de más de cinco segundos","Algo azul","Los zapatos de uno de los novios","Un niño adueñándose de la pista",
+    "Una corbata donde no debería estar","Foto de grupo con diez personas o más","Alguien emocionado durante un discurso","Tu mejor cara de espía",
+    "Un brindis con alguien que acabas de conocer","El detalle de decoración que más te guste","Los novios riéndose a carcajadas","Alguien que se sabe toda la canción"
+  ], retos_por_persona: 5 };
+  const pick = card => { const M = cfg.retos.length, n = Math.min(cfg.retos_por_persona, M), s = ((card - 1) * n) % M; return Array.from({ length: n }, (_, j) => (s + j) % M); };
+  const fake = seed => {
+    const c = document.createElement("canvas"); c.width = c.height = 480; const g = c.getContext("2d");
+    const pal = [["#9ED9CF","#4E8C84"],["#F2C3AE","#B8694A"],["#E8DCC8","#8E6C4E"],["#BFE3DC","#2F8F84"],["#F5D9C9","#C98663"]][seed % 5];
+    const gr = g.createLinearGradient(0, 0, 480, 480); gr.addColorStop(0, pal[0]); gr.addColorStop(1, pal[1]); g.fillStyle = gr; g.fillRect(0, 0, 480, 480);
+    for (let i = 0; i < 12; i++) { g.fillStyle = `rgba(255,250,240,${.06 + (i % 4) * .05})`; g.beginPath(); g.arc((seed * 71 + i * 97) % 480, (seed * 37 + i * 53) % 480, 16 + (seed * 13 + i * 29) % 58, 0, 7); g.fill(); }
+    g.fillStyle = "rgba(255,255,255,.92)"; g.font = "700 20px Nunito, sans-serif"; g.fillText("foto de ejemplo", 22, 452);
+    return c.toDataURL("image/jpeg", .8);
+  };
+  const players = [], photos = [], subs = [];
+  const names = ["Lucía","Marcos","Tía Carmen","Pablo","Irene","Abuelo Paco","Nerea","Diego","Alba","Hugo"];
+  const t0 = Date.now() - 70 * 60000; let seed = 1;
+  names.forEach((n, i) => players.push({ id: "p" + i, token: "t" + i, card: i + 1, name: n, missions: pick(i + 1), created_at: new Date(t0 + i * 90000).toISOString() }));
+  [5, 4, 4, 3, 3, 2, 1, 1, 0, 0].forEach((k, i) => players[i].missions.slice(0, k).forEach(m => photos.push({ id: uid(), player_id: players[i].id, card: players[i].card, mission: m, mission_text: cfg.retos[m], url: fake(seed++), created_at: new Date(t0 + ((seed * 131) % 60) * 60000).toISOString() })));
   photos.sort((a, b) => a.created_at.localeCompare(b.created_at));
-  const emit = (t, x) => subs.forEach(f => f(t, x));
-  const store = {
+  const emit = (t, p) => subs.forEach(f => f(t, p));
+  const admins = ["novios@ejemplo.com"];
+  return {
     demo: true,
-    async players(){ return players.slice(); },
+    async register(name){ const card = Math.max(0, ...players.map(p => p.card)) + 1; const p = { id: uid(), token: uid(), card, name, missions: pick(card), created_at: new Date().toISOString() }; players.push(p); emit("players", { new: p }); return { token: p.token, card, name }; },
+    async mine(token){ const p = players.find(x => x.token === token); if (!p) return null; return { id: p.id, token, card: p.card, name: p.name, retos: p.missions.map(i => ({ i, text: cfg.retos[i] })), photos: photos.filter(x => x.player_id === p.id) }; },
+    async addPhoto(m, mission, blob){ const p = players.find(x => x.id === m.id); const ph = { id: uid(), player_id: p.id, card: p.card, mission, mission_text: cfg.retos[mission], url: URL.createObjectURL(blob), created_at: new Date().toISOString() }; photos.push(ph); emit("photos", { new: ph }); },
+    async session(){ return { email: "novios@ejemplo.com", isAdmin: true }; },
+    async login(){}, async logout(){},
+    async players(){ return players.map(p => ({ ...p })); },
     async photos(){ return photos.slice(); },
-    async player(card){ return players.find(p => p.card === card) || null; },
-    async join(card, name){ let p = players.find(x => x.card === card); if (!p) { p = { id: uid(), card, name, created_at: new Date().toISOString() }; players.push(p); emit("player", p); } return p; },
-    async register(name){ const card = Math.max(0, ...players.map(p => p.card)) + 1; return store.join(card, name); },
-    async upload(player, mission, blob){
-      const ph = { id: uid(), player_id: player.id, card: player.card, mission, mission_text: CONFIG.retos[mission], url: URL.createObjectURL(blob), created_at: new Date().toISOString() };
-      photos.push(ph); emit("photo", ph); return ph;
-    },
-    on(fn){ subs.push(fn); },
+    async config(){ return { retos: cfg.retos.slice(), retos_por_persona: cfg.retos_por_persona }; },
+    async saveConfig(r, n){ cfg.retos = r.slice(); cfg.retos_por_persona = n; },
+    async renamePlayer(id, name){ players.find(p => p.id === id).name = name; },
+    async deletePhoto(ph){ const i = photos.findIndex(x => x.id === ph.id); if (i >= 0) photos.splice(i, 1); },
+    async deletePlayer(id){ for (let i = photos.length - 1; i >= 0; i--) if (photos[i].player_id === id) photos.splice(i, 1); players.splice(players.findIndex(p => p.id === id), 1); },
+    async admins(){ return admins.slice(); },
+    async addAdmin(e){ admins.push(e.toLowerCase().trim()); }, async removeAdmin(e){ admins.splice(admins.indexOf(e), 1); },
+    on(fn){ subs.push(fn); return () => { const i = subs.indexOf(fn); if (i >= 0) subs.splice(i, 1); }; },
     simulate(){
-      const cand = [];
-      players.forEach(p => { const done = new Set(photos.filter(x => x.card === p.card).map(x => x.mission)); missionsFor(p.card).forEach(m => { if (!done.has(m)) cand.push([p, m]); }); });
-      if (!cand.length) return;
-      const [p, m] = cand[Math.floor(Math.random() * cand.length)];
-      const ph = { id: uid(), player_id: p.id, card: p.card, mission: m, mission_text: CONFIG.retos[m], url: fakePhoto(seed++), created_at: new Date().toISOString() };
-      photos.push(ph); emit("photo", ph);
+      const cand = []; players.forEach(p => { const done = new Set(photos.filter(x => x.player_id === p.id).map(x => x.mission)); p.missions.forEach(m => { if (!done.has(m)) cand.push([p, m]); }); });
+      if (!cand.length) return; const [p, m] = cand[Math.floor(Math.random() * cand.length)];
+      const ph = { id: uid(), player_id: p.id, card: p.card, mission: m, mission_text: cfg.retos[m], url: fake(seed++), created_at: new Date().toISOString() };
+      photos.push(ph); emit("photos", { new: ph });
     }
   };
-  return store;
 }
 
-/* ---------- vistas ---------- */
+/* =========================================================
+   VISTAS · invitados
+   ========================================================= */
 let store, cleanup = () => {};
-
-function demoBar(current){
+function demoBar(cur){
   if (!store.demo) return "";
-  const l = (h, t) => `<a href="#${h}" ${current === h ? 'aria-current="page"' : ""}>${t}</a>`;
-  return `<div class="demo-bar"><span><b>Vista previa</b> con invitados de ejemplo</span><nav>${l("inicio","Registro")}${l("panel","Panel en directo")}${l("cartel","Cartel")}</nav></div>`;
+  const l = (h, t) => `<a href="#${h}" ${cur === h ? 'aria-current="page"' : ""}>${t}</a>`;
+  return `<div class="demo-bar"><span><b>Vista previa</b> con datos de ejemplo</span><nav>${l("inicio", "Invitado: registro")}${l("mision", "Invitado: su misión")}${l("admin", "Panel de los novios")}</nav></div>`;
 }
-
-const MEM = "mision-boda-carta";
-function savedCard(){ try { return JSON.parse(localStorage.getItem(MEM) || "null"); } catch { return null; } }
-function saveCard(p){ try { localStorage.setItem(MEM, JSON.stringify({ card: p.card, name: p.name })); } catch {} }
 
 function viewHome(){
-  const saved = savedCard();
-  const n = Math.min(CONFIG.retosPorTarjeta, CONFIG.retos.length);
-  app.innerHTML = demoBar("inicio") + `<div class="wrap">
-    <div class="home-hero"><div class="seal">✕</div>
-    <p class="mono muted">Misión secreta${CONFIG.fecha ? " · " + esc(CONFIG.fecha) : ""}</p>
-    <h1>${esc(CONFIG.novios)}</h1>
-    <p>Conviértete en fotógrafo encubierto de la boda. Escribe tu nombre y recibirás ${n} momentos secretos que fotografiar. Cada foto suma un punto en la clasificación en directo.</p></div>
-    ${saved ? `<a class="route" href="#c-${saved.card}"><strong>Seguir como ${esc(saved.name)}</strong><span>Tu expediente Nº ${pad(saved.card)}</span><i>→</i></a>
-      <p class="mono muted" style="margin:0">¿Eres otra persona?</p>` : ""}
-    <form class="join" id="reg"><label for="nombre" class="mono muted">Tu nombre</label>
-      <input id="nombre" type="text" maxlength="30" autocomplete="given-name" placeholder="Por ejemplo, Lucía" required>
-      <button type="submit">Recibir mi misión</button><div class="status" id="st"></div></form>
-    ${store.demo ? `<div class="routes" style="margin-top:12px">
-        <a class="route" href="#panel"><strong>Panel en directo</strong><span>Para la pantalla o proyector: fotos y clasificación</span><i>→</i></a>
-        <a class="route" href="#cartel"><strong>Cartel para las mesas</strong><span>Un único QR para todos los invitados</span><i>→</i></a>
-      </div>` : ""}
-  </div>`;
+  const m = me();
+  app.innerHTML = demoBar("inicio") + `<main class="guest">${BRANCH()}
+    <header class="hero">
+      <p class="kicker">Tienes una misión secreta ${HEART}</p>
+      <h1 class="names"><span>${esc(CONFIG.novio1)}</span><span>+ ${esc(CONFIG.novio2)}</span></h1>
+      <p class="date">${esc(CONFIG.fecha)}</p>
+      <p class="place">${esc(CONFIG.lugar)}</p>
+    </header>
+    <p class="intro">Durante la boda serás nuestro fotógrafo encubierto. Escribe tu nombre y recibirás cinco momentos que capturar sin que nadie sospeche.</p>
+    ${m ? `<a class="resume" href="#mision">${LOGO}<strong>Seguir como ${esc(m.name)}</strong><small>Tu misión Nº ${pad(m.card)}</small><i>→</i></a>` : ""}
+    <form class="sheet form" id="reg">
+      <label class="label" for="nombre">${m ? "¿Eres otra persona?" : "Tu nombre"}</label>
+      <input id="nombre" type="text" maxlength="40" autocomplete="given-name" placeholder="Por ejemplo, Lucía" required>
+      <button type="submit">Recibir mi misión</button>
+      <div class="status" id="st" aria-live="polite"></div>
+    </form>
+  </main>`;
   $("#reg").addEventListener("submit", async e => {
     e.preventDefault();
     const name = $("#nombre").value.trim(); if (!name) return;
     const b = e.submitter; if (b) b.disabled = true;
     $("#st").className = "status"; $("#st").textContent = "Preparando tu misión…";
-    try { const p = await store.register(name); saveCard(p); location.hash = "c-" + p.card; }
-    catch (err) { $("#st").className = "status err"; $("#st").textContent = "No se pudo registrar tu nombre. Revisa la conexión y vuelve a intentarlo."; if (b) b.disabled = false; }
+    try { const r = await store.register(name); remember({ token: r.token, card: r.card, name: r.name }); location.hash = "mision"; }
+    catch (err) { console.error(err); $("#st").className = "status err"; $("#st").textContent = "No se pudo registrar tu nombre. Comprueba la conexión e inténtalo de nuevo."; if (b) b.disabled = false; }
   });
 }
 
-async function viewGuest(card){
-  if (!(card >= 1)) { app.innerHTML = demoBar("") + `<div class="wrap"><h1>Este enlace no es válido</h1><p class="muted"><a href="#inicio">Vuelve al inicio</a> y escribe tu nombre para recibir tu misión.</p></div>`; return; }
-  const mine = missionsFor(card);
-  let player = await store.player(card);
-  const code = `Expediente Nº ${pad(card)}`;
-
-  if (!player) {
-    app.innerHTML = demoBar("") + `<div class="wrap"><div class="dossier">
-      <div class="d-head"><span class="mono muted">${code}</span><span class="stamp">Confidencial</span></div>
-      <h1>Tienes una misión</h1>
-      <p>Durante la boda de ${esc(CONFIG.novios)} tendrás que fotografiar ${mine.length} momentos sin que nadie sospeche. Cada foto suma un punto en la clasificación en directo.</p>
-      <form class="join" id="join"><label for="nombre" class="mono muted">Tu nombre de agente</label>
-      <input id="nombre" type="text" maxlength="30" autocomplete="given-name" placeholder="Tu nombre" required>
-      <button type="submit">Aceptar la misión</button><div class="status" id="st"></div></form></div></div>`;
-    $("#join").addEventListener("submit", async e => {
-      e.preventDefault();
-      const name = $("#nombre").value.trim(); if (!name) return;
-      e.submitter && (e.submitter.disabled = true);
-      try { const p = await store.join(card, name); if (p && p.name === name) saveCard(p); viewGuest(card); }
-      catch (err) { $("#st").className = "status err"; $("#st").textContent = "No se pudo guardar tu nombre. Revisa la conexión y vuelve a intentarlo."; e.submitter && (e.submitter.disabled = false); }
-    });
-    return;
-  }
-
-  const photos = (await store.photos()).filter(p => p.card === card);
-  const byM = {}; photos.forEach(p => { byM[p.mission] = p; });
-  const done = mine.filter(m => byM[m]).length;
-  app.innerHTML = demoBar("") + `<div class="wrap"><div class="dossier">
-    <div class="d-head"><span class="mono muted">${code}</span><span class="stamp">Confidencial</span></div>
-    <h1>Agente ${esc(player.name)}</h1>
-    <div><div class="bar"><div style="width:${done / mine.length * 100}%"></div></div>
-    <p class="muted" style="margin:6px 0 0;font-size:14px">${done} de ${mine.length} momentos capturados</p></div>
-    ${done === mine.length ? `<div class="win">Misión cumplida. Estás en la clasificación del panel: aún puedes añadir más fotos.</div>` : ""}
-    <ol class="missions">${mine.map((m, i) => {
-      const ph = byM[m];
-      return `<li class="m ${ph ? "done" : ""}"><span class="m-n">${pad(i + 1)}</span><span class="m-t">${esc(CONFIG.retos[m])}</span>
-      <span class="m-side">${ph
-        ? `<img src="${esc(ph.url)}" alt="Tu foto de este reto"><label class="again">Otra<input type="file" accept="image/*" data-m="${m}"></label>`
-        : `<label class="btn small">Capturar<input type="file" accept="image/*" data-m="${m}"></label>`}</span></li>`;
-    }).join("")}</ol>
-    <div class="status" id="st" aria-live="polite"></div>
-    <p class="muted" style="font-size:13px;margin:0">Consejo: haz la foto con la cámara normal y súbela aquí luego, así no te pierdes el momento.</p>
-  </div></div>`;
-
-  app.querySelectorAll('input[type=file]').forEach(inp => inp.addEventListener("change", async () => {
+async function viewMission(){
+  let m = me();
+  if (!m && store.demo) { const r = await store.register("Invitado de prueba"); remember({ token: r.token, card: r.card, name: r.name }); m = me(); }
+  if (!m) { location.hash = "inicio"; return; }
+  const d = await store.mine(m.token);
+  if (!d) { remember(null); app.innerHTML = demoBar("mision") + `<main class="guest"><div class="sheet"><h1 class="names" style="font-size:40px">Misión no encontrada</h1><p>Puede que los novios la hayan borrado. <a href="#inicio">Regístrate de nuevo</a> para recibir otra.</p></div></main>`; return; }
+  const byM = {}; d.photos.forEach(p => { byM[p.mission] = p; });
+  const done = d.retos.filter(r => byM[r.i]).length, total = d.retos.length;
+  const link = `${base()}#m-${d.token}`;
+  app.innerHTML = demoBar("mision") + `<main class="guest">${BRANCH()}
+    <header class="hero">
+      <p class="kicker">Misión Nº ${pad(d.card)} ${HEART}</p>
+      <h1 class="names" style="font-size:clamp(44px,12vw,60px)"><span>${esc(d.name)}</span></h1>
+      <p class="place">Boda de ${esc(PAIR)}</p>
+    </header>
+    <section class="sheet">
+      <div class="progress"><div class="track"><div style="width:${total ? done / total * 100 : 0}%"></div></div>
+        <span class="muted" style="font-size:14px;font-weight:700">${done} de ${total} momentos capturados</span></div>
+      ${total && done === total ? `<div class="win">¡Misión cumplida! Los novios verán todas tus fotos. Puedes seguir añadiendo más.</div>` : ""}
+      <ol class="retos">${d.retos.map((r, k) => { const ph = byM[r.i]; return `<li class="reto ${ph ? "done" : ""}">
+        <span class="n">${k + 1}</span><span class="t">${esc(r.text)}</span>
+        <span class="side">${ph ? `<img src="${esc(ph.url)}" alt="Tu foto"><label class="again">Cambiar<input type="file" accept="image/*" data-m="${r.i}"></label>`
+          : `<label class="btn small">Capturar<input type="file" accept="image/*" data-m="${r.i}"></label>`}</span></li>`; }).join("")}</ol>
+      <div class="status" id="st" aria-live="polite"></div>
+      <p class="muted" style="font-size:14px;margin:0">Haz la foto con la cámara de siempre y súbela aquí cuando puedas. Solo la verán los novios.</p>
+    </section>
+    <section class="keep"><span class="label">Tu enlace personal</span>
+      <span>Guárdalo para abrir tu misión en otro móvil.</span>
+      <div class="row"><input type="text" id="mylink" readonly value="${esc(link)}" aria-label="Tu enlace personal"><button class="ghost small" id="copy">Copiar</button></div>
+    </section>
+  </main>`;
+  $("#copy").addEventListener("click", async () => {
+    const i = $("#mylink");
+    try { await navigator.clipboard.writeText(i.value); $("#copy").textContent = "Copiado"; }
+    catch { i.select(); $("#copy").textContent = "Selecciónalo y copia"; }
+  });
+  app.querySelectorAll("input[type=file]").forEach(inp => inp.addEventListener("change", async () => {
     const f = inp.files[0]; if (!f) return;
     const st = $("#st"); st.className = "status"; st.textContent = "Subiendo foto…";
-    app.querySelectorAll('input[type=file]').forEach(x => x.disabled = true);
-    try { const blob = await compress(f); await store.upload(player, +inp.dataset.m, blob); await viewGuest(card); $("#st").textContent = "Foto guardada."; }
-    catch (err) { st.className = "status err"; st.textContent = "No se pudo subir la foto. Comprueba la cobertura y prueba otra vez."; app.querySelectorAll('input[type=file]').forEach(x => x.disabled = false); }
+    app.querySelectorAll("input[type=file]").forEach(x => x.disabled = true);
+    try { const blob = await compress(f); await store.addPhoto({ id: d.id, token: d.token }, +inp.dataset.m, blob); await viewMission(); const s = $("#st"); if (s) { s.className = "status ok"; s.textContent = "Foto guardada."; } }
+    catch (err) { console.error(err); st.className = "status err"; st.textContent = "No se pudo subir la foto. Comprueba la cobertura y prueba otra vez."; app.querySelectorAll("input[type=file]").forEach(x => x.disabled = false); }
   }));
 }
 
-async function viewPanel(){
-  let players = await store.players(), photos = await store.photos(), lastBump = null;
-  app.innerHTML = demoBar("panel") + `<div class="wide">
-    <header class="p-head"><div class="p-title"><p class="mono live" style="margin:0 0 6px">En directo</p><h1>${esc(CONFIG.novios)}</h1></div>
-    <div class="stats" id="stats"></div>
-    <div class="tools no-print"><button class="ghost" id="fs">Pantalla completa</button></div></header>
-    <div class="p-grid"><section><div class="spot" id="spot"></div><div class="feed" id="feed"></div></section>
-    <aside class="board"><h2>Clasificación</h2><ol class="rank" id="rank"></ol>
-    <div><p class="mono muted" style="margin:0 0 8px">Aún sin cazar</p><div class="chips" id="pend"></div></div></aside></div></div>`;
-  const pmap = () => Object.fromEntries(players.map(p => [p.card, p]));
-
-  function render(flash){
-    const pm = pmap(), n = Math.min(CONFIG.retosPorTarjeta, CONFIG.retos.length);
-    const score = {};
-    players.forEach(p => score[p.card] = { p, set: new Set(), last: 0 });
-    photos.forEach(ph => { const s = score[ph.card]; if (!s) return; if (missionsFor(ph.card).includes(ph.mission)) s.set.add(ph.mission); s.last = Math.max(s.last, new Date(ph.created_at).getTime()); });
-    const list = Object.values(score).sort((a, b) => b.set.size - a.set.size || a.last - b.last).slice(0, 10);
-    const totalDone = Object.values(score).reduce((a, s) => a + s.set.size, 0);
-    $("#stats").innerHTML = `<div class="stat"><b>${players.length}</b><span>agentes</span></div><div class="stat"><b>${photos.length}</b><span>fotos</span></div><div class="stat"><b>${totalDone}</b><span>retos cumplidos</span></div>`;
-    $("#rank").innerHTML = list.length ? list.map((s, i) => `<li class="${lastBump === s.p.card ? "bump" : ""}"><span class="pos">${pad(i + 1)}</span>
-      <span class="who">${esc(s.p.name)}<small>Nº ${pad(s.p.card)}</small></span>
-      <span class="dots" aria-label="${s.set.size} de ${n}">${Array.from({ length: n }, (_, k) => `<i class="${k < s.set.size ? "on" : ""}"></i>`).join("")}<span class="pts">${s.set.size}</span></span></li>`).join("")
-      : `<li><span></span><span class="muted">Aún no hay agentes. Aparecerán aquí al escanear su tarjeta.</span><span></span></li>`;
-    const caught = new Set(photos.map(p => p.mission));
-    const pending = CONFIG.retos.map((t, i) => [t, i]).filter(([, i]) => !caught.has(i));
-    $("#pend").innerHTML = pending.length ? pending.slice(0, 12).map(([t]) => `<span>${esc(t)}</span>`).join("") + (pending.length > 12 ? `<span>+${pending.length - 12} más</span>` : "") : `<span>¡Todos cazados!</span>`;
-    const recent = photos.slice().reverse();
-    const top = recent[0];
-    $("#spot").innerHTML = top ? `<img src="${esc(top.url)}" alt=""><div class="cap"><strong>${esc(top.mission_text || CONFIG.retos[top.mission])}</strong><span>${esc(pm[top.card]?.name || "Agente")} · ${ago(top.created_at)}</span></div>`
-      : `<div class="empty">Las fotos aparecerán aquí en cuanto alguien complete un reto.</div>`;
-    if (flash) { const s = $("#spot"); s.classList.remove("flash"); void s.offsetWidth; s.classList.add("flash"); }
-    $("#feed").innerHTML = recent.slice(1, 13).map(ph => `<figure><img src="${esc(ph.url)}" alt="" loading="lazy"><figcaption>${esc(pm[ph.card]?.name || "")}</figcaption></figure>`).join("");
-  }
-  render();
-
-  let alive = true;
-  store.on((t, x) => {
-    if (!alive) return;
-    if (t === "player" && !players.find(p => p.card === x.card)) players.push(x);
-    if (t === "photo" && !photos.find(p => p.id === x.id)) { photos.push(x); lastBump = x.card; }
-    render(t === "photo");
-  });
-  const poll = setInterval(async () => { try { if (!store.demo) { players = await store.players(); photos = await store.photos(); } render(); } catch {} }, 30000);
-  const sim = store.demo ? setInterval(() => store.simulate(), 6000) : null;
-  $("#fs").addEventListener("click", async () => { try { document.fullscreenElement ? await document.exitFullscreen() : await document.documentElement.requestFullscreen(); } catch {} });
-  let lock = null; try { lock = await navigator.wakeLock?.request("screen"); } catch {}
-  cleanup = () => { alive = false; clearInterval(poll); sim && clearInterval(sim); try { lock?.release(); } catch {} };
-}
-
-let adminOk = false;
-async function viewCards(){
-  if (!store.demo && !adminOk) {
-    app.innerHTML = `<form class="pin" id="pin"><h1>Cartel y fotos</h1><label for="pinv" class="muted">PIN de los novios</label>
-      <input id="pinv" type="password" inputmode="numeric" autocomplete="off"><button type="submit">Entrar</button><div class="status err" id="st"></div></form>`;
-    $("#pin").addEventListener("submit", e => { e.preventDefault(); if ($("#pinv").value === CONFIG.pinAdmin) { adminOk = true; viewCards(); } else $("#st").textContent = "PIN incorrecto."; });
+/* =========================================================
+   VISTAS · panel de los novios
+   ========================================================= */
+let loginNote = "";
+async function viewAdmin(tab){
+  const s = await store.session();
+  if (!s) return viewLogin();
+  if (!s.isAdmin) {
+    app.innerHTML = `<main class="login">${BRANCH()}<h1>Sin acceso</h1><p>La cuenta <b>${esc(s.email)}</b> no está en la lista de los novios. Pide a ${esc(CONFIG.novio1)} o a ${esc(CONFIG.novio2)} que la añadan desde el panel.</p><button class="ghost" id="out">Cerrar sesión</button></main>`;
+    $("#out").addEventListener("click", async () => { await store.logout(); viewLogin(); });
     return;
   }
-  const hasQR = await loadScript("https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js").then(() => true, () => false);
-  const n = Math.min(CONFIG.retosPorTarjeta, CONFIG.retos.length);
-  const url = baseUrl();
-  app.innerHTML = demoBar("cartel") + `<div class="wide"><div class="adm-head"><div><p class="mono muted" style="margin:0 0 6px">Para vosotros · ${CONFIG.retos.length} retos</p><h1>Cartel para las mesas</h1></div>
-    <div class="tools">${store.demo ? `<span class="muted" style="font-size:14px;max-width:320px">En tu web aparecerán aquí los botones para imprimir el cartel y descargar todas las fotos en un ZIP.</span>`
-      : `<button id="print">Imprimir cartel</button><button class="ghost" id="zip">Descargar todas las fotos</button>`}</div></div>
-    <div class="status" id="st"></div>
-    <article class="poster"><p class="mono">Misión secreta</p><h2>${esc(CONFIG.novios)}</h2>
-      <p class="poster-lead">Escanea, escribe tu nombre y recibirás ${n} momentos secretos que fotografiar durante la boda.</p>
-      <div class="qr big" id="qr-main"></div>
-      <p class="poster-url">${esc(url.replace(/^https?:\/\//, ""))}</p>
-      <p class="poster-foot">Las mejores fotos salen en la pantalla en directo${CONFIG.fecha ? " · " + esc(CONFIG.fecha) : ""}</p></article>
-    <p class="muted no-print" style="max-width:560px;margin:20px auto 0;text-align:center;font-size:14px">Imprime unas cuantas copias y ponlas en las mesas o en la entrada. El enlace también se puede mandar por WhatsApp.</p></div>`;
-  if (hasQR && window.QRCode) new QRCode($("#qr-main"), { text: url, width: 480, height: 480, correctLevel: QRCode.CorrectLevel.M });
-  if (!store.demo) {
-    $("#print").addEventListener("click", () => window.print());
-    $("#zip").addEventListener("click", async () => {
-      const st = $("#st");
-      try {
-        st.textContent = "Preparando el ZIP…";
-        await loadScript("https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js");
-        const [pl, ph] = [await store.players(), await store.photos()];
-        const names = Object.fromEntries(pl.map(p => [p.card, p.name]));
-        const zip = new JSZip();
-        for (let i = 0; i < ph.length; i++) {
-          const p = ph[i]; st.textContent = `Descargando foto ${i + 1} de ${ph.length}…`;
-          const b = await (await fetch(p.url)).blob();
-          const safe = s => String(s || "").replace(/[^\p{L}\p{N} ]/gu, "").trim().slice(0, 40);
-          zip.file(`${pad(i + 1)} - ${safe(names[p.card])} - ${safe(p.mission_text)}.jpg`, b);
-        }
-        const out = await zip.generateAsync({ type: "blob" });
-        const a = document.createElement("a"); a.href = URL.createObjectURL(out); a.download = "fotos-boda.zip"; a.click();
-        st.textContent = `Listo: ${ph.length} fotos.`;
-      } catch (e) { st.textContent = "No se pudo crear el ZIP. Inténtalo de nuevo con buena conexión."; }
-    });
-  }
+  const tabs = [["directo", "En directo"], ["invitados", "Invitados"], ["fotos", "Fotos"], ["retos", "Retos"], ["cartel", "Cartel"], ["acceso", "Acceso"]];
+  tab = tabs.some(t => t[0] === tab) ? tab : "directo";
+  app.innerHTML = demoBar("admin") + `<main class="admin">
+    <header class="a-top"><div class="a-brand">${LOGO}<div><h1>Panel de los novios</h1><p>Misión secreta · ${esc(CONFIG.fecha)}</p></div></div>
+      <div class="a-user"><span>${esc(s.email)}</span><button class="ghost small" id="out">Cerrar sesión</button></div></header>
+    <nav class="tabs">${tabs.map(([k, t]) => `<a href="#admin/${k}" ${k === tab ? 'aria-current="page"' : ""}>${t}</a>`).join("")}</nav>
+    <section id="tab"></section></main>`;
+  $("#out").addEventListener("click", async () => { cleanup(); await store.logout(); viewLogin(); });
+  const el = $("#tab");
+  await ({ directo: tabLive, invitados: tabPlayers, fotos: tabPhotos, retos: tabRetos, cartel: tabPoster, acceso: tabAccess })[tab](el, s);
 }
 
+function viewLogin(){
+  app.innerHTML = demoBar("admin") + `<main class="login">${BRANCH()}
+    <p class="kicker">Solo para ${esc(PAIR)}</p><h1>Panel de los novios</h1>
+    <p style="margin:0">Escribe tu correo y te enviaremos un enlace para entrar. Ábrelo en este mismo navegador.</p>
+    <form class="form" id="lg"><label class="label" for="em">Correo</label>
+      <input id="em" type="email" autocomplete="email" required placeholder="tu@correo.com">
+      <button type="submit">Enviarme el enlace</button><div class="status ${loginNote ? "err" : ""}" id="st">${esc(loginNote)}</div></form></main>`;
+  $("#lg").addEventListener("submit", async e => {
+    e.preventDefault(); const b = e.submitter; if (b) b.disabled = true;
+    const st = $("#st"); st.className = "status"; st.textContent = "Enviando…";
+    try { await store.login($("#em").value.trim()); st.className = "status ok"; st.textContent = "Listo. Revisa tu correo y pulsa el enlace (mira también en spam)."; }
+    catch (err) { console.error(err); st.className = "status err"; st.textContent = /rate|seconds/i.test(err.message || "") ? "Has pedido varios enlaces seguidos. Espera un minuto y vuelve a probar." : "No se pudo enviar el enlace. Revisa el correo e inténtalo otra vez."; if (b) b.disabled = false; }
+  });
+}
+
+function score(players, photos){
+  const map = {}; players.forEach(p => map[p.id] = { p, set: new Set(), last: 0, count: 0 });
+  photos.forEach(ph => { const s = map[ph.player_id]; if (!s) return; s.count++; if (s.p.missions.includes(ph.mission)) s.set.add(ph.mission); s.last = Math.max(s.last, new Date(ph.created_at).getTime()); });
+  return map;
+}
+
+async function tabLive(el){
+  let [players, photos, cfg] = await Promise.all([store.players(), store.photos(), store.config()]);
+  let bump = null;
+  el.innerHTML = `<div class="live-head"><div><span class="live-dot">En directo</span><h2 class="live-names">${esc(PAIR)}</h2></div>
+    <div class="stats" id="stats"></div><button class="ghost no-print" id="fs">Pantalla completa</button></div>
+    <div class="live-grid"><section><div class="spot" id="spot"></div><div class="feed" id="feed"></div></section>
+    <aside class="panel-box board"><h3>Clasificación</h3><ol class="rank" id="rank"></ol>
+    <div style="margin-top:16px"><p class="label" style="margin:0 0 8px">Aún sin cazar</p><div class="chips" id="pend"></div></div></aside></div>`;
+  const flash = () => { const sp = $("#spot"); if (!sp) return; sp.classList.remove("flash"); void sp.offsetWidth; sp.classList.add("flash"); };
+  const render = () => {
+    if (!$("#stats")) return;
+    const sc = score(players, photos), byId = Object.fromEntries(players.map(p => [p.id, p]));
+    const list = Object.values(sc).sort((a, b) => b.set.size - a.set.size || a.last - b.last).slice(0, 10);
+    const n = Math.max(1, ...players.map(p => p.missions.length));
+    $("#stats").innerHTML = `<div class="stat"><b>${players.length}</b><span>agentes</span></div><div class="stat"><b>${photos.length}</b><span>fotos</span></div><div class="stat"><b>${Object.values(sc).reduce((a, s) => a + s.set.size, 0)}</b><span>retos cumplidos</span></div>`;
+    $("#rank").innerHTML = list.length ? list.map((s, i) => `<li class="${bump === s.p.id ? "bump" : ""}"><span class="pos">${i + 1}</span><span class="who">${esc(s.p.name)}<small>Misión Nº ${pad(s.p.card)}</small></span>
+      <span class="dots">${Array.from({ length: n }, (_, k) => `<i class="${k < s.set.size ? "on" : ""}"></i>`).join("")}<b>${s.set.size}</b></span></li>`).join("")
+      : `<li><span></span><span class="muted">Todavía nadie se ha registrado.</span><span></span></li>`;
+    const caught = new Set(photos.map(p => p.mission));
+    const pend = cfg.retos.map((t, i) => [t, i]).filter(([, i]) => !caught.has(i));
+    $("#pend").innerHTML = pend.length ? pend.slice(0, 12).map(([t]) => `<span>${esc(t)}</span>`).join("") + (pend.length > 12 ? `<span>y ${pend.length - 12} más</span>` : "") : `<span>¡Todos cazados!</span>`;
+    const rec = photos.slice().reverse(), top = rec[0];
+    $("#spot").innerHTML = top ? `<img src="${esc(top.url)}" alt=""><div class="cap"><strong>${esc(top.mission_text || cfg.retos[top.mission] || "")}</strong><span>${esc(byId[top.player_id]?.name || "")} · ${ago(top.created_at)}</span></div>`
+      : `<div class="empty">Las fotos aparecerán aquí en cuanto alguien cumpla un reto.</div>`;
+    $("#feed").innerHTML = rec.slice(1, 13).map(ph => `<figure><img src="${esc(ph.url)}" alt="" loading="lazy"><figcaption>${esc(byId[ph.player_id]?.name || "")}</figcaption></figure>`).join("");
+  };
+  render();
+  let alive = true, timer = null;
+  const reload = (fl) => { clearTimeout(timer); timer = setTimeout(async () => { if (!alive) return; try { [players, photos] = await Promise.all([store.players(), store.photos()]); render(); if (fl) flash(); } catch {} }, 500); };
+  const off = store.on((t, p) => {
+    if (!alive) return;
+    if (store.demo) { if (t === "photos" && p.new) { photos.push(p.new); bump = p.new.player_id; } if (t === "players" && p.new && !players.find(x => x.id === p.new.id)) players.push(p.new); render(); if (t === "photos") flash(); return; }
+    if (t === "photos" && p.eventType === "INSERT") bump = p.new?.player_id;
+    reload(t === "photos" && p.eventType === "INSERT");
+  });
+  const poll = setInterval(() => { if (store.demo) render(); else reload(false); }, 30000);
+  const sim = store.demo ? setInterval(() => store.simulate(), 7000) : null;
+  $("#fs").addEventListener("click", async () => { try { document.fullscreenElement ? await document.exitFullscreen() : await document.documentElement.requestFullscreen(); } catch {} });
+  let lock = null; try { lock = await navigator.wakeLock?.request("screen"); } catch {}
+  cleanup = () => { alive = false; off(); clearInterval(poll); sim && clearInterval(sim); clearTimeout(timer); try { lock?.release(); } catch {} };
+}
+
+async function tabPlayers(el){
+  const [players, photos] = await Promise.all([store.players(), store.photos()]);
+  const sc = score(players, photos);
+  el.innerHTML = `<div class="section-title"><h2>Invitados registrados</h2><span class="muted">${players.length} en total · puedes corregir nombres o borrar registros</span></div>
+    <div class="panel-box"><div class="rows">
+      <div class="prow head"><span>Nº</span><span>Nombre</span><span>Retos</span><span>Fotos</span><span>Registro</span><span></span></div>
+      ${players.length ? players.map(p => { const s = sc[p.id]; return `<div class="prow" data-id="${esc(p.id)}">
+        <span class="num">${pad(p.card)}</span>
+        <span class="name-edit"><input type="text" id="n-${esc(p.id)}" value="${esc(p.name)}" maxlength="40" aria-label="Nombre"><button class="ghost small save" hidden>Guardar</button></span>
+        <span class="dots">${p.missions.map((_, k) => `<i class="${k < s.set.size ? "on" : ""}"></i>`).join("")}<span class="muted" style="font-size:13px;font-weight:700;margin-left:6px">${s.set.size}/${p.missions.length}</span></span>
+        <span>${s.count} ${s.count === 1 ? "foto" : "fotos"}</span>
+        <span class="muted" style="font-size:13.5px">${ago(p.created_at)}</span>
+        <span class="acts"><a class="ghost btn small" href="#admin/fotos?p=${encodeURIComponent(p.id)}">Ver fotos</a><button class="danger small del">Borrar</button></span></div>`; }).join("")
+      : `<p class="muted" style="padding:10px 4px">Todavía nadie se ha registrado.</p>`}
+    </div></div>`;
+  el.querySelectorAll(".prow[data-id]").forEach(row => {
+    const id = row.dataset.id, inp = row.querySelector("input"), save = row.querySelector(".save"), orig = inp.value;
+    inp.addEventListener("input", () => { save.hidden = inp.value.trim() === orig || !inp.value.trim(); save.textContent = "Guardar"; });
+    save.addEventListener("click", async () => { save.disabled = true; try { await store.renamePlayer(id, inp.value.trim()); save.textContent = "Guardado"; setTimeout(() => tabPlayers(el), 700); } catch { save.textContent = "Error"; save.disabled = false; } });
+    armed(row.querySelector(".del"), async () => { await store.deletePlayer(id); row.remove(); });
+  });
+}
+
+async function tabPhotos(el){
+  const q = new URLSearchParams(location.hash.split("?")[1] || "");
+  const [players, photos] = await Promise.all([store.players(), store.photos()]);
+  const byId = Object.fromEntries(players.map(p => [p.id, p]));
+  let filter = q.get("p") || "";
+  el.innerHTML = `<div class="section-title"><h2>Todas las fotos</h2><div class="tools">
+      <select id="flt" aria-label="Filtrar por invitado" style="width:auto;padding:10px 14px;font-size:14.5px"><option value="">Todos los invitados</option>${players.map(p => `<option value="${esc(p.id)}" ${p.id === filter ? "selected" : ""}>${esc(p.name)}</option>`).join("")}</select>
+      <button id="zip" ${store.demo ? 'disabled title="Disponible en tu web"' : ""}>Descargar todas (ZIP)</button></div></div>
+    <div class="status" id="st"></div><div class="pgrid" id="grid"></div>`;
+  const draw = () => {
+    const list = photos.filter(p => !filter || p.player_id === filter).slice().reverse();
+    $("#grid").innerHTML = list.length ? list.map(p => `<article class="pcard" data-id="${esc(p.id)}"><img src="${esc(p.url)}" alt="" loading="lazy">
+      <div class="meta"><strong>${esc(byId[p.player_id]?.name || "Invitado borrado")}</strong><span>${esc(p.mission_text || "")}</span><span class="muted">${ago(p.created_at)}</span></div>
+      <div class="acts"><a class="ghost btn small" href="${esc(p.url)}" target="_blank" rel="noopener">Abrir</a><button class="danger small del">Borrar</button></div></article>`).join("")
+      : `<p class="muted">No hay fotos todavía.</p>`;
+    $("#grid").querySelectorAll(".pcard").forEach(card => { const ph = photos.find(p => p.id === card.dataset.id); armed(card.querySelector(".del"), async () => { await store.deletePhoto(ph); photos.splice(photos.indexOf(ph), 1); card.remove(); }); });
+  };
+  draw();
+  $("#flt").addEventListener("change", e => { filter = e.target.value; draw(); });
+  $("#zip").addEventListener("click", async () => {
+    const st = $("#st");
+    try {
+      st.className = "status"; st.textContent = "Preparando el ZIP…";
+      await loadScript("https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js");
+      const zip = new JSZip(), safe = s => String(s || "").replace(/[^\p{L}\p{N} ]/gu, "").trim().slice(0, 40);
+      for (let i = 0; i < photos.length; i++) {
+        const p = photos[i]; st.textContent = `Descargando foto ${i + 1} de ${photos.length}…`;
+        zip.file(`${pad(i + 1)} - ${safe(byId[p.player_id]?.name)} - ${safe(p.mission_text)}.jpg`, await (await fetch(p.url)).blob());
+      }
+      const a = document.createElement("a"); a.href = URL.createObjectURL(await zip.generateAsync({ type: "blob" })); a.download = "fotos-sara-joshua.zip"; a.click();
+      st.className = "status ok"; st.textContent = `Listo: ${photos.length} fotos.`;
+    } catch (e) { console.error(e); st.className = "status err"; st.textContent = "No se pudo crear el ZIP. Inténtalo de nuevo con buena conexión."; }
+  });
+}
+
+async function tabRetos(el){
+  const [cfg, players] = await Promise.all([store.config(), store.players()]);
+  const draft = cfg.retos.slice();
+  const use = i => players.filter(p => p.missions.includes(i)).length;
+  const locked = players.length > 0;
+  el.innerHTML = `<div class="section-title"><h2>Retos</h2><span class="muted">${draft.length} retos · cada invitado recibe unos distintos al registrarse</span></div>
+    <div class="panel-box" style="display:flex;flex-direction:column;gap:18px">
+      <div class="row-inline"><label class="label" for="nper">Retos por invitado</label><input type="number" id="nper" min="1" max="10" value="${cfg.retos_por_persona}"><span class="muted" style="font-size:13.5px">Se aplica a quien se registre a partir de ahora.</span></div>
+      <div class="rlist" id="rl"></div>
+      <div class="row-inline"><input type="text" id="newr" maxlength="90" placeholder="Nuevo reto, por ejemplo: Alguien bailando con la abuela" style="flex:1;min-width:220px"><button class="ghost" id="add">Añadir</button></div>
+      ${locked ? `<p class="muted" style="margin:0;font-size:14px">Como ya hay invitados registrados, los retos existentes no se pueden quitar: solo corregir su texto. Los nuevos sí. Para empezar de cero, borra antes a los invitados.</p>` : ""}
+      <div class="row-inline"><button id="save">Guardar cambios</button><span class="status" id="st"></span></div></div>`;
+  const draw = () => {
+    $("#rl").innerHTML = draft.map((t, i) => `<div class="rrow"><span class="n">${i + 1}</span><input type="text" value="${esc(t)}" data-i="${i}" maxlength="90" aria-label="Reto ${i + 1}">
+      <span class="use">${i < cfg.retos.length ? `en ${use(i)} ${use(i) === 1 ? "misión" : "misiones"}` : "nuevo"}</span>
+      ${locked && i < cfg.retos.length ? "<span></span>" : `<button class="danger small rm" data-i="${i}" aria-label="Quitar reto ${i + 1}">Quitar</button>`}</div>`).join("");
+    $("#rl").querySelectorAll("input").forEach(inp => inp.addEventListener("input", () => { draft[+inp.dataset.i] = inp.value; }));
+    $("#rl").querySelectorAll(".rm").forEach(b => b.addEventListener("click", () => { draft.splice(+b.dataset.i, 1); draw(); }));
+  };
+  draw();
+  const addIt = () => { const v = $("#newr").value.trim(); if (!v) return; draft.push(v); $("#newr").value = ""; draw(); };
+  $("#add").addEventListener("click", addIt);
+  $("#newr").addEventListener("keydown", e => { if (e.key === "Enter") { e.preventDefault(); addIt(); } });
+  $("#save").addEventListener("click", async () => {
+    const st = $("#st"), n = Math.max(1, Math.min(10, +$("#nper").value || 5));
+    if (locked && draft.slice(0, cfg.retos.length).some(t => !t.trim())) { st.className = "status err"; st.textContent = "Hay retos vacíos. Escribe algo en ellos antes de guardar."; return; }
+    const clean = draft.map(t => t.trim()).filter(Boolean);
+    if (clean.length < n) { st.className = "status err"; st.textContent = `Necesitas al menos ${n} retos.`; return; }
+    $("#save").disabled = true; st.className = "status"; st.textContent = "Guardando…";
+    try { await store.saveConfig(clean, n); st.className = "status ok"; st.textContent = "Guardado."; setTimeout(() => tabRetos(el), 800); }
+    catch (e) { console.error(e); st.className = "status err"; st.textContent = "No se pudo guardar. Inténtalo otra vez."; $("#save").disabled = false; }
+  });
+}
+
+async function tabPoster(el){
+  const url = base();
+  el.innerHTML = `<div class="section-title"><h2>Cartel para las mesas</h2><div class="tools"><button id="print" ${store.demo ? 'disabled title="Disponible en tu web"' : ""}>Imprimir cartel</button></div></div>
+    <article class="poster">${BRANCH()}
+      <p class="kicker">Tienes una misión secreta ${HEART}</p>
+      <h2 class="names"><span>${esc(CONFIG.novio1)}</span><span>+ ${esc(CONFIG.novio2)}</span></h2>
+      <p class="date">${esc(CONFIG.fecha)}</p>
+      <p class="lead">Escanea, escribe tu nombre y recibirás cinco momentos secretos que fotografiar durante la boda.</p>
+      <div class="qrbox" id="qr"><img class="logo" src="assets/sj.png" alt=""></div>
+      <p class="url">${esc(url.replace(/^https?:\/\//, "").replace(/\/$/, ""))}</p></article>
+    <p class="muted no-print" style="text-align:center;margin-top:16px;font-size:14px">Imprime unas cuantas copias para las mesas y la entrada. El mismo enlace se puede mandar por WhatsApp.</p>`;
+  try {
+    await loadScript("https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js");
+    new QRCode($("#qr"), { text: url, width: 424, height: 424, colorDark: "#6F3E1E", colorLight: "#FFFDF8", correctLevel: QRCode.CorrectLevel.H });
+  } catch {}
+  $("#print").addEventListener("click", () => window.print());
+}
+
+async function tabAccess(el, s){
+  const list = await store.admins();
+  el.innerHTML = `<div class="section-title"><h2>Quién puede entrar</h2></div>
+    <div class="panel-box" style="max-width:620px"><ul class="alist">${list.map(e => `<li><span>${esc(e)}${e === (s.email || "").toLowerCase() ? ' <span class="muted" style="font-weight:600">(tú)</span>' : ""}</span>${e === (s.email || "").toLowerCase() ? "" : `<button class="danger small rm" data-e="${esc(e)}">Quitar</button>`}</li>`).join("")}</ul>
+      <form class="row-inline" id="af"><input type="email" id="ae" required placeholder="correo@ejemplo.com" style="flex:1;min-width:220px" aria-label="Correo"><button type="submit">Dar acceso</button></form>
+      <p class="muted" style="font-size:14px;margin:12px 0 0">Esa persona entrará en <b>${esc(base().replace(/^https?:\/\//, ""))}#admin</b> con su correo, igual que tú.</p>
+      <div class="status" id="st"></div></div>`;
+  el.querySelectorAll(".rm").forEach(b => armed(b, async () => { await store.removeAdmin(b.dataset.e); tabAccess(el, s); }));
+  $("#af").addEventListener("submit", async e => {
+    e.preventDefault();
+    try { await store.addAdmin($("#ae").value); tabAccess(el, s); }
+    catch (err) { $("#st").className = "status err"; $("#st").textContent = "No se pudo añadir. Puede que ya tenga acceso."; }
+  });
+}
+
+/* =========================================================
+   RUTAS
+   ========================================================= */
 async function route(){
   cleanup(); cleanup = () => {};
-  const h = location.hash.replace(/^#/, "");
-  const m = h.match(/^c-(\d+)$/);
+  const tok = location.hash.match(/^#m-([0-9a-z-]{8,})$/i);
+  if (tok) {
+    const d = await store.mine(tok[1]).catch(() => null);
+    if (d) remember({ token: tok[1], card: d.card, name: d.name });
+    history.replaceState(null, "", location.pathname + "#mision");
+  }
   window.scrollTo(0, 0);
   try {
-    if (m) await viewGuest(+m[1]);
-    else if (h === "panel") await viewPanel();
-    else if (h === "cartel" || h === "tarjetas") await viewCards();
+    const path = location.hash.replace(/^#/, "").split("?")[0];
+    if (path === "mision") await viewMission();
+    else if (path === "admin" || path.startsWith("admin/")) await viewAdmin(path.split("/")[1]);
     else viewHome();
   } catch (e) {
     console.error(e);
-    app.innerHTML = `<div class="wrap"><h1>Algo ha fallado</h1><p class="muted">No hay conexión con la base de datos. Recarga la página en unos segundos.</p></div>`;
+    app.innerHTML = `<main class="guest"><div class="sheet"><h1 class="names" style="font-size:40px">Algo ha fallado</h1><p>No hay conexión. Recarga la página en unos segundos.</p></div></main>`;
   }
 }
 
 (async () => {
-  try { store = LIVE ? await liveStore() : demoStore(); }
-  catch (e) { app.innerHTML = `<div class="wrap"><h1>Sin conexión</h1><p class="muted">No se pudo conectar. Comprueba la cobertura y recarga la página.</p></div>`; return; }
+  try { store = DEMO ? demoStore() : await liveStore(); }
+  catch (e) { app.innerHTML = `<main class="guest"><div class="sheet"><h1 class="names" style="font-size:40px">Sin conexión</h1><p>Comprueba la cobertura y recarga la página.</p></div></main>`; return; }
+  const qs = new URLSearchParams(location.search);
+  if (qs.has("acceso") || qs.has("code") || qs.has("error_description")) {
+    const s = await store.session().catch(() => null);
+    if (!s) loginNote = qs.get("error_description") ? "El enlace ha caducado o ya se usó. Pide uno nuevo." : "No se pudo entrar. Abre el enlace en el mismo navegador donde lo pediste, o pide uno nuevo.";
+    history.replaceState(null, "", location.pathname + "#admin");
+  }
   window.addEventListener("hashchange", route);
   route();
 })();
